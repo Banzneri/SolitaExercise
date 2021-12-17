@@ -1,13 +1,18 @@
-import fs from 'fs';
 import parse from 'csv-parser';
+import fs from 'fs';
 import { FarmDataObject } from '../types/FarmDataObject';
 import { HandleCSVParsingResults } from '../types/HandleCSVParsingResults';
 
-const CSVToArray = (
+export const validFarmDataObject = (farmData: FarmDataObject) => {
+  const data = farmData;
+  return data;
+};
+
+export const CSVToArray = (
   filePath: string,
   handleResult: HandleCSVParsingResults,
 ) => {
-  const records: Array<FarmDataObject> = [];
+  const records: FarmDataObject[] = [];
 
   const parser = parse();
 
@@ -27,5 +32,3 @@ const CSVToArray = (
       handleResult(err);
     });
 };
-
-export default CSVToArray;
