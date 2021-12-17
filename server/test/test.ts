@@ -6,102 +6,108 @@ import { FarmDataObject } from '../types/FarmDataObject';
 const { describe, it } = mocha;
 
 describe('ValidateFarmData', () => {
-  const falseTemperature1: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'temperature',
-    value: -52,
-  };
+  describe('validateTemperature', () => {
+    const falseTemperature1: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'temperature',
+      value: -52,
+    };
 
-  const falseTemperature2: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'temperature',
-    value: -49,
-  };
+    const falseTemperature2: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'temperature',
+      value: -49,
+    };
 
-  const trueTemperature: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'temperature',
-    value: 101,
-  };
+    const trueTemperature: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'temperature',
+      value: 101,
+    };
 
-  const falseRainfall1: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'rainfall',
-    value: -1,
-  };
+    it('should return false when temperature is below -50', () => {
+      assert.equal(validFarmDataObject(falseTemperature1), false);
+    });
 
-  const falseRainfall2: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'rainfall',
-    value: 501,
-  };
+    it('should return false when temperature is above 100', () => {
+      assert.equal(validFarmDataObject(trueTemperature), false);
+    });
 
-  const trueRainfall: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'rainfall',
-    value: 400,
-  };
-
-  const falsePh1: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'ph',
-    value: -1,
-  };
-
-  const falsePh2: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'ph',
-    value: 15,
-  };
-
-  const truePh: FarmDataObject = {
-    location: 'Noora\'s farm',
-    datetime: new Date('2019-01-02T11:19:44.018Z'),
-    sensorType: 'ph',
-    value: 7,
-  };
-
-  it('should return false when temperature is below -50', () => {
-    assert.equal(validFarmDataObject(falseTemperature1), false);
+    it('should return true when temperature is within limits', () => {
+      assert.equal(validFarmDataObject(falseTemperature2), true);
+    });
   });
 
-  it('should return false when temperature is above 100', () => {
-    assert.equal(validFarmDataObject(trueTemperature), false);
+  describe('validateRainfall', () => {
+    const falseRainfall1: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'rainfall',
+      value: -1,
+    };
+
+    const falseRainfall2: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'rainfall',
+      value: 501,
+    };
+
+    const trueRainfall: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'rainfall',
+      value: 400,
+    };
+
+    it('should return false when rainfall is below 0', () => {
+      assert.equal(validFarmDataObject(falseRainfall1), false);
+    });
+
+    it('should return false when rainfall is above 500', () => {
+      assert.equal(validFarmDataObject(falseRainfall2), false);
+    });
+
+    it('should return true when rainfall is within limits', () => {
+      assert.equal(validFarmDataObject(trueRainfall), true);
+    });
   });
 
-  it('should return true when temperature is within limits', () => {
-    assert.equal(validFarmDataObject(falseTemperature2), true);
-  });
+  describe('validatePh', () => {
+    const falsePh1: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'ph',
+      value: -1,
+    };
 
-  it('should return false when rainfall is below 0', () => {
-    assert.equal(validFarmDataObject(falseRainfall1), false);
-  });
+    const falsePh2: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'ph',
+      value: 15,
+    };
 
-  it('should return false when rainfall is above 500', () => {
-    assert.equal(validFarmDataObject(falseRainfall2), false);
-  });
+    const truePh: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'ph',
+      value: 7,
+    };
 
-  it('should return true when rainfall is within limits', () => {
-    assert.equal(validFarmDataObject(trueRainfall), true);
-  });
+    it('should return false when ph is below 0', () => {
+      assert.equal(validFarmDataObject(falsePh1), false);
+    });
 
-  it('should return false when ph is below 0', () => {
-    assert.equal(validFarmDataObject(falsePh1), false);
-  });
+    it('should return false when ph is above 14', () => {
+      assert.equal(validFarmDataObject(falsePh2), false);
+    });
 
-  it('should return false when ph is above 14', () => {
-    assert.equal(validFarmDataObject(falsePh2), false);
-  });
-
-  it('should return true when ph is within limits', () => {
-    assert.equal(validFarmDataObject(truePh), true);
+    it('should return true when ph is within limits', () => {
+      assert.equal(validFarmDataObject(truePh), true);
+    });
   });
 });
