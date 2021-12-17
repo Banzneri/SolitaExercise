@@ -1,14 +1,11 @@
 import fs from 'fs';
 import parse from 'csv-parser';
 import { FarmDataObject } from '../types/FarmDataObject';
-
-interface Callback {
-  (error: Error | null, farmDataObjects?: Array<FarmDataObject>): void;
-}
+import { HandleCSVParsingResults } from '../types/HandleCSVParsingResults';
 
 const CSVToArray = (
   filePath: string,
-  handleResult: Callback,
+  handleResult: HandleCSVParsingResults,
 ) => {
   const records: Array<FarmDataObject> = [];
 

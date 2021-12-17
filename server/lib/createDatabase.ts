@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import pgtools from 'pgtools';
 
 const databaseName = 'farms';
@@ -9,7 +10,7 @@ const config = {
   port: 5432,
 };
 
-pgtools.createdb(config, databaseName, (err, res) => {
+pgtools.createdb(config, databaseName, (err: Error, res: Response) => {
   if (err) {
     console.error(err);
     process.exit(-1);
