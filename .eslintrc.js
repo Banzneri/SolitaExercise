@@ -7,7 +7,11 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'airbnb',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -17,9 +21,16 @@ module.exports = {
   },
   plugins: [
     'react',
+    '@typescript-eslint',
   ],
   rules: {
+    'import/extensions': [0, 'never'],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        args: 'none',
+      },
+    ],
     'no-console': 'off',
-    'import/extensions': 'always'
   },
 };

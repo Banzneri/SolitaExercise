@@ -1,18 +1,23 @@
 import fs from 'fs';
 import parse from 'csv-parser';
+import { FarmDataObject } from '../types/FarmDataObject';
 
-function CSVToArray(filePath, handleResult) {
-  const records = [];
+interface Callback {
+  (error: Error | null, farmDataObjects?: Array<FarmDataObject>): void;
+}
 
-  const parser = parse({
-    delimiter: ',',
-    trime: true,
-  });
+const CSVToArray = (
+  filePath: string,
+  handleResult: Callback,
+) => {
+  const records: Array<FarmDataObject> = [];
+
+  const parser = parse();
 
   fs.createReadStream(filePath)
     .pipe(parser)
     .on('readable', () => {
-      let record;
+      let record: FarmDataObject;
       // eslint-disable-next-line no-cond-assign
       while ((record = parser.read()) !== null) {
         records.push(record);
@@ -24,6 +29,6 @@ function CSVToArray(filePath, handleResult) {
     .on('error', (err) => {
       handleResult(err);
     });
-}
+};
 
 export default CSVToArray;
