@@ -4,8 +4,8 @@ import { FarmDataObject } from '../types/FarmDataObject';
 import { HandleCSVParsingResults } from '../types/HandleCSVParsingResults';
 
 export const validFarmDataObject = (farmData: FarmDataObject) => {
-  const validTemperature = (temperature: number) => temperature >= -50 && temperature <= 100;
-  const validRainfall = (rainFall: number) => rainFall >= 0 && rainFall <= 500;
+  const validTemperature = (temp: number) => temp >= -50 && temp <= 100;
+  const validRainfall = (rain: number) => rain >= 0 && rain <= 500;
   const validPh = (ph: number) => ph >= 0 && ph <= 14;
 
   const { sensorType, value } = farmData;
@@ -23,21 +23,28 @@ export const CSVToArray = (
   filePath: string,
   handleResult: HandleCSVParsingResults,
 ) => {
-  const records: FarmDataObject[] = [];
+  const convertTypes = (farmDataObject: FarmDataObject) => {
+    const farm = farmDataObject;
+    farm.datetime = new Date(farm.datetime);
+    farm.value = Number(farm.value);
+    return farm;
+  };
+
+  const farmObjects: FarmDataObject[] = [];
 
   const parser = parse();
 
   fs.createReadStream(filePath)
     .pipe(parser)
     .on('readable', () => {
-      let record: FarmDataObject;
+      let farm: FarmDataObject;
       // eslint-disable-next-line no-cond-assign
-      while ((record = parser.read()) !== null) {
-        records.push(record);
+      while ((farm = parser.read()) !== null) {
+        farmObjects.push(convertTypes(farm));
       }
     })
     .on('end', () => {
-      handleResult(null, records);
+      handleResult(null, farmObjects);
     })
     .on('error', (err) => {
       handleResult(err);
