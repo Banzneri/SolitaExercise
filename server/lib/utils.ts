@@ -4,20 +4,9 @@ import { FarmDataObject } from '../types/FarmDataObject';
 import { HandleCSVParsingResults } from '../types/HandleCSVParsingResults';
 
 export const validFarmDataObject = (farmData: FarmDataObject) => {
-  const validTemperature = (temperature: number) => {
-    const isValid = temperature >= -50 && temperature <= 100;
-    return isValid;
-  };
-
-  const validRainfall = (rainFall: number) => {
-    const isValid = rainFall >= 0 && rainFall <= 500;
-    return isValid;
-  };
-
-  const validPh = (ph: number) => {
-    const isValid = ph >= 0 && ph <= 14;
-    return isValid;
-  };
+  const validTemperature = (temperature: number) => temperature >= -50 && temperature <= 100;
+  const validRainfall = (rainFall: number) => rainFall >= 0 && rainFall <= 500;
+  const validPh = (ph: number) => ph >= 0 && ph <= 14;
 
   const { sensorType, value } = farmData;
 
