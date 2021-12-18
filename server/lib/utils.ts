@@ -14,8 +14,7 @@ export const validFarmDataObject = (farmData: FarmDataObject) => {
     case 'temperature': return validTemperature(value);
     case 'rainfall': return validRainfall(value);
     case 'ph': return validPh(value);
-    default:
-      return false;
+    default: return false;
   }
 };
 
@@ -31,6 +30,7 @@ export const CSVToArray = (
   };
 
   const farmObjects: FarmDataObject[] = [];
+  const invalidObjects: FarmDataObject[] = [];
 
   const parser = parse();
 
@@ -40,11 +40,15 @@ export const CSVToArray = (
       let farm: FarmDataObject;
       // eslint-disable-next-line no-cond-assign
       while ((farm = parser.read()) !== null) {
-        farmObjects.push(convertTypes(farm));
+        if (validFarmDataObject(farm)) {
+          farmObjects.push(convertTypes(farm));
+        } else {
+          invalidObjects.push(convertTypes(farm));
+        }
       }
     })
     .on('end', () => {
-      handleResult(null, farmObjects);
+      handleResult(null, invalidObjects.length > 0 ? invalidObjects : farmObjects);
     })
     .on('error', (err) => {
       handleResult(err);

@@ -98,6 +98,13 @@ describe('ValidateFarmData', () => {
       value: 7,
     };
 
+    const unknownFarmName: FarmDataObject = {
+      location: 'böö',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'ph',
+      value: 7,
+    };
+
     it('should return false when ph is below 0', () => {
       assert.equal(validFarmDataObject(falsePh1), false);
     });
@@ -108,6 +115,23 @@ describe('ValidateFarmData', () => {
 
     it('should return true when ph is within limits', () => {
       assert.equal(validFarmDataObject(truePh), true);
+    });
+
+    it('should return false if farm name doesn\'t exist', () => {
+      assert.equal(validFarmDataObject(unknownFarmName), false);
+    });
+  });
+
+  describe('validateSensorType', () => {
+    const wrongInput: FarmDataObject = {
+      location: 'Noora\'s farm',
+      datetime: new Date('2019-01-02T11:19:44.018Z'),
+      sensorType: 'phh',
+      value: 7,
+    };
+
+    it('should return false if sensortype is wrong', () => {
+      assert.equal(validFarmDataObject(wrongInput), false);
     });
   });
 });
