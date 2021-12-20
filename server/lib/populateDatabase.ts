@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import cliProgress from 'cli-progress';
 import { CSVToArray } from './utils';
 import { FarmDataObject } from '../types/FarmDataObject';
 import db from './db';
@@ -36,15 +37,23 @@ fs.readdir(initialDataPath, async (error, files) => {
     INSERT INTO farm_data (location, time, sensor_type, value)
     VALUES ($1, $2, $3, $4)`;
 
-  console.log('populating database, may take some time...');
+  const records = farmDataObjects.length;
+  let recordsAdded = 0;
+  console.log('Populating database...');
+  console.log('');
+  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  bar.start(records, 0);
   // eslint-disable-next-line no-restricted-syntax
   for await (const farm of farmDataObjects) {
+    recordsAdded += 1;
+    bar.update(recordsAdded);
+
     await db.query(query, [
       farm.location,
       farm.datetime,
       farm.sensorType,
       farm.value]);
   }
-
-  console.log('database populated');
+  bar.stop();
+  console.log('\nFinishing...');
 });
