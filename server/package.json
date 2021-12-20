@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha -r ts-node/register ./test/*.ts",
-    "createDb": "npx ts-node ./lib/populateDatabaseWithInitialData.ts"
+    "createDb": "npx ts-node ./lib/populateDatabase.ts"
   },
   "author": "Pasi Hanhijärvi",
   "license": "ISC",
