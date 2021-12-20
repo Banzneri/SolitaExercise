@@ -37,12 +37,12 @@ fs.readdir(initialDataPath, async (error, files) => {
     INSERT INTO farm_data (location, time, sensor_type, value)
     VALUES ($1, $2, $3, $4)`;
 
-  const records = farmDataObjects.length;
-  let recordsAdded = 0;
-  console.log('Populating database...');
-  console.log('');
+  console.log('Populating database...\n');
   const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-  bar.start(records, 0);
+  bar.start(farmDataObjects.length, 0);
+
+  let recordsAdded = 0;
+
   // eslint-disable-next-line no-restricted-syntax
   for await (const farm of farmDataObjects) {
     recordsAdded += 1;
