@@ -10,9 +10,8 @@ const client = new Client({
   port: 5432,
 });
 
-console.log('1111');
-
 const createDatabase = async () => {
+  console.log('creating a database...');
   try {
     await client.connect(); // gets connection
     await client.query(`CREATE DATABASE ${databaseName}`); // sends queries
@@ -42,6 +41,7 @@ const createDatabase = async () => {
 
     await db.query(query);
     await db.query(query1);
+    console.log('created a database');
   }
 };
 

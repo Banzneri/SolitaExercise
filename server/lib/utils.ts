@@ -27,9 +27,8 @@ export const CSVToArray = async (
     return farm;
   };
 
-  const parser = parse();
-
   const getData = new Promise<FarmDataObject[]>((resolve, reject) => {
+    const parser = parse();
     const farms: FarmDataObject[] = [];
     fs.createReadStream(filePath)
       .pipe(parser)

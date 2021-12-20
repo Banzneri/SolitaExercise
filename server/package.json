@@ -4,7 +4,8 @@
   "description": "Backend for the Solita exercise",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register ./test/*.ts"
+    "test": "mocha -r ts-node/register ./test/*.ts",
+    "createDb": "npx ts-node ./lib/populateDatabaseWithInitialData.ts"
   },
   "author": "Pasi Hanhijärvi",
   "license": "ISC",
