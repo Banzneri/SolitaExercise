@@ -6,5 +6,5 @@ Installation:
 
 Pre-requisites: You need to have NodeJS and postgresql installed
 
-Step 1: run npm install
+Step 1: run npm install  
 Step 2: navigate to server folder and create database with: npm run createDb
