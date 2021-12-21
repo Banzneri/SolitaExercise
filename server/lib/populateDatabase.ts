@@ -27,21 +27,25 @@ const getData = async (
 };
 
 fs.readdir(initialDataPath, async (error, files) => {
+  const createProgressBar = () => new cliProgress.SingleBar(
+    {},
+    cliProgress.Presets.shades_classic,
+  );
+
   if (error) throw error;
 
   await createDatabase();
 
   const farmDataObjects = await getData(files);
 
-  const query = `
-    INSERT INTO farm_data (location, time, sensor_type, value)
-    VALUES ($1, $2, $3, $4)`;
-
   console.log('Populating database...\n');
-  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  const bar = createProgressBar();
   bar.start(farmDataObjects.length, 0);
 
   let recordsAdded = 0;
+  const query = `
+    INSERT INTO farm_data (location, time, sensor_type, value)
+    VALUES ($1, $2, $3, $4)`;
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const farm of farmDataObjects) {
@@ -55,5 +59,5 @@ fs.readdir(initialDataPath, async (error, files) => {
       farm.value]);
   }
   bar.stop();
-  console.log('\nFinishing...');
+  return console.log('\nFinishing...');
 });

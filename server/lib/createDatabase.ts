@@ -1,13 +1,16 @@
+import dotenv from 'dotenv';
 import { Client } from 'pg';
 import db from './db';
 
-const databaseName = 'farm_database';
+dotenv.config();
+
+const databaseName = process.env.DB_DATABASE;
 
 const client = new Client({
-  host: 'localhost',
-  user: 'postgres',
-  password: 'Jaakkola12',
-  port: 5432,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: +(process.env.DB_PORT || ''),
 });
 
 const createDatabase = async () => {
