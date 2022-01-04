@@ -1,8 +1,11 @@
-import parse from 'csv-parser';
+import parseCSV from 'csv-parser';
+import { Response } from 'express';
 import fs from 'fs';
-import { FarmDataObject } from '../types/FarmDataObject';
+import FarmService from '../services/FarmService';
+import { FarmData } from '../types/FarmData';
+import { RawData } from '../types/RawData';
 
-export const validFarmDataObject = (farmData: FarmDataObject) => {
+export const validFarmDataObject = (farmData: FarmData) => {
   const validTemperature = (temp: number) => temp >= -50 && temp <= 100;
   const validRainfall = (rain: number) => rain >= 0 && rain <= 500;
   const validPh = (ph: number) => ph >= 0 && ph <= 14;
@@ -19,25 +22,30 @@ export const validFarmDataObject = (farmData: FarmDataObject) => {
 
 export const CSVToArray = async (
   filePath: string,
-) => {
-  const convertTypes = (farmDataObject: FarmDataObject) => {
-    const farm = farmDataObject;
-    farm.datetime = new Date(farm.datetime);
-    farm.value = Number(farm.value);
-    return farm;
+): Promise<FarmData[]> => {
+  const convertTypes = async (rawData: RawData) => {
+    const data: FarmData = {} as FarmData;
+    const farm = await FarmService.getFarmByName(rawData.location);
+    data.farmId = farm[0].id;
+    data.datetime = new Date(rawData.datetime);
+    data.sensorType = rawData.sensorType;
+    data.value = Number(rawData.value);
+    return data;
   };
 
-  const getData = new Promise<FarmDataObject[]>((resolve, reject) => {
-    const parser = parse();
-    const farms: FarmDataObject[] = [];
+  return new Promise<FarmData[]>((resolve, reject) => {
+    const parser = parseCSV();
+    const farms: FarmData[] = [];
     fs.createReadStream(filePath)
       .pipe(parser)
-      .on('readable', () => {
-        let farm: FarmDataObject;
+      .on('readable', async () => {
+        let rawData: RawData;
         // eslint-disable-next-line no-cond-assign
-        while ((farm = parser.read()) !== null) {
+        while ((rawData = parser.read()) !== null) {
+          /* eslint-disable no-await-in-loop */
+          const farm = await convertTypes(rawData);
           if (validFarmDataObject(farm)) {
-            farms.push(convertTypes(farm));
+            farms.push(farm);
           }
         }
       })
@@ -48,6 +56,15 @@ export const CSVToArray = async (
         reject(err);
       });
   });
-
-  return getData;
 };
+
+export const respondResults = (res: Response, results: any[]) => (
+  results.length === 0
+    ? res.status(204).json({ message: 'No results found' })
+    : res.status(200).json(results));
+
+export const respondError = (
+  res: Response,
+  code: number,
+  message: string,
+) => res.status(code).json({ message });

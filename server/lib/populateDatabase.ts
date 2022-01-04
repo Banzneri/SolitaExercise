@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import cliProgress from 'cli-progress';
+import progressBar from 'cli-progress';
 import { CSVToArray } from './utils';
-import { FarmDataObject } from '../types/FarmDataObject';
+import { FarmData } from '../types/FarmData';
 import db from './db';
 import createDatabase from './createDatabase';
 
@@ -10,8 +10,8 @@ const initialDataPath = path.join(path.resolve(), 'initial_data');
 
 const getData = async (
   files: string[],
-): Promise<FarmDataObject[]> => {
-  const allFarms: FarmDataObject[][] = [];
+): Promise<FarmData[]> => {
+  const allFarms: FarmData[][] = [];
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const file of files) {
@@ -27,9 +27,9 @@ const getData = async (
 };
 
 fs.readdir(initialDataPath, async (error, files) => {
-  const createProgressBar = () => new cliProgress.SingleBar(
+  const createProgressBar = () => new progressBar.SingleBar(
     {},
-    cliProgress.Presets.shades_classic,
+    progressBar.Presets.shades_classic,
   );
 
   if (error) throw error;
@@ -44,7 +44,7 @@ fs.readdir(initialDataPath, async (error, files) => {
 
   let recordsAdded = 0;
   const query = `
-    INSERT INTO farm_data (location, time, sensor_type, value)
+    INSERT INTO farm_data (farm_id, time, sensor_type, value)
     VALUES ($1, $2, $3, $4)`;
 
   // eslint-disable-next-line no-restricted-syntax
@@ -53,7 +53,7 @@ fs.readdir(initialDataPath, async (error, files) => {
     bar.update(recordsAdded);
 
     await db.query(query, [
-      farm.location,
+      farm.farmId,
       farm.datetime,
       farm.sensorType,
       farm.value]);

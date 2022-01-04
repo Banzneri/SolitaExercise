@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import { Client } from 'pg';
+import fs from 'fs';
+import path from 'path';
 import db from './db';
 
 dotenv.config();
@@ -16,35 +18,17 @@ const client = new Client({
 const createDatabase = async () => {
   console.log(`Creating a database ${databaseName}...`);
   try {
-    await client.connect(); // gets connection
-    await client.query(`CREATE DATABASE ${databaseName}`); // sends queries
-    return true;
+    await client.connect();
+    await client.query(`CREATE DATABASE ${databaseName}`);
+    console.log('here');
+    const filePath = path.join(__dirname, 'init_database.sql');
+    const initQuery = await fs.promises.readFile(filePath);
+    console.log(initQuery.toString());
+    await db.query(initQuery.toString());
+    await client.end();
+    return console.log(`Created a database ${databaseName}`);
   } catch (error) {
-    console.error(error.stack);
-    return false;
-  } finally {
-    await client.end(); // closes connection
-
-    const query = `
-      CREATE TABLE "farm_data" (
-        "id" SERIAL PRIMARY KEY,
-        "location" varchar NOT NULL,
-        "time" timestamp NOT NULL,
-        "sensor_type" varchar NOT NULL,
-        "value" decimal NOT NULL
-      );`;
-
-    const query1 = `
-      CREATE TABLE "farms" (
-        "id" SERIAL PRIMARY KEY,
-        "name" varchar NOT NULL,
-        "location" varchar NOT NULL
-      );
-    `;
-
-    await db.query(query);
-    await db.query(query1);
-    console.log(`Created a database ${databaseName}`);
+    return console.error(error.stack);
   }
 };
 

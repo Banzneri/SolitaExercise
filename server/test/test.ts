@@ -1,28 +1,28 @@
 import assert from 'assert';
 import mocha from 'mocha';
 import { validFarmDataObject } from '../lib/utils';
-import { FarmDataObject } from '../types/FarmDataObject';
+import { FarmData } from '../types/FarmData';
 
 const { describe, it } = mocha;
 
 describe('ValidateFarmData', () => {
   describe('validateTemperature', () => {
-    const falseTemperature1: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const falseTemperature1: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'temperature',
       value: -52,
     };
 
-    const falseTemperature2: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const falseTemperature2: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'temperature',
       value: -49,
     };
 
-    const trueTemperature: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const trueTemperature: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'temperature',
       value: 101,
@@ -42,22 +42,22 @@ describe('ValidateFarmData', () => {
   });
 
   describe('validateRainfall', () => {
-    const falseRainfall1: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const falseRainfall1: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'rainfall',
       value: -1,
     };
 
-    const falseRainfall2: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const falseRainfall2: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'rainfall',
       value: 501,
     };
 
-    const trueRainfall: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const trueRainfall: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'rainfall',
       value: 400,
@@ -77,29 +77,29 @@ describe('ValidateFarmData', () => {
   });
 
   describe('validatePh', () => {
-    const falsePh1: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const falsePh1: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'ph',
       value: -1,
     };
 
-    const falsePh2: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const falsePh2: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'ph',
       value: 15,
     };
 
-    const truePh: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const truePh: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'ph',
       value: 7,
     };
 
-    const unknownFarmName: FarmDataObject = {
-      location: 'böö',
+    const unknownFarmName: FarmData = {
+      farmId: 99,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'ph',
       value: 7,
@@ -123,8 +123,8 @@ describe('ValidateFarmData', () => {
   });
 
   describe('validateSensorType', () => {
-    const wrongInput: FarmDataObject = {
-      location: 'Noora\'s farm',
+    const wrongInput: FarmData = {
+      farmId: 1,
       datetime: new Date('2019-01-02T11:19:44.018Z'),
       sensorType: 'phh',
       value: 7,
