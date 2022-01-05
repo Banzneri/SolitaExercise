@@ -22,12 +22,12 @@ const FarmDataService = {
   },
 
   getFarmDataByFarmIdAndSensorType: async (
-    farmId: number,
-    sensorType: string,
+    id: number,
+    sensor: string,
   ) => {
     try {
       const query = 'SELECT * FROM farm_data WHERE farm_id = $1 AND sensor_type = $2';
-      const farmData = await db.query(query, [farmId, sensorType.toLowerCase()]);
+      const farmData = await db.query(query, [id, sensor.toLowerCase()]);
       return farmData.rows;
     } catch (error) {
       throw Error('Error getting data by farm id and sensor type');

@@ -32,9 +32,9 @@ export const getFarmDataByFarmIdAndSensorType = async (
   res: Response,
 ) => {
   try {
-    const farmId = Number(req.params.farmId);
-    const { sensorType } = req.params;
-    const results = await FarmDataService.getFarmDataByFarmIdAndSensorType(farmId, sensorType);
+    const id = Number(req.params.id);
+    const { sensor } = req.params;
+    const results = await FarmDataService.getFarmDataByFarmIdAndSensorType(id, sensor);
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error.message);
@@ -46,10 +46,10 @@ export const getFarmDataByFarmIdAndMonthYear = async (
   res: Response,
 ) => {
   try {
-    const farmId = Number(req.params.farmId);
+    const id = Number(req.params.id);
     const year = Number(req.params.year);
     const month = Number(req.params.month);
-    const results = await FarmDataService.getFarmDataByFarmIdAndMonthYear(farmId, year, month);
+    const results = await FarmDataService.getFarmDataByFarmIdAndMonthYear(id, year, month);
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error.message);
