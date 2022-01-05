@@ -20,12 +20,12 @@ const createDatabase = async () => {
   try {
     await client.connect();
     await client.query(`CREATE DATABASE ${databaseName}`);
-    console.log('here');
+
     const filePath = path.join(__dirname, 'init_database.sql');
     const initQuery = await fs.promises.readFile(filePath);
-    console.log(initQuery.toString());
     await db.query(initQuery.toString());
     await client.end();
+
     return console.log(`Created a database ${databaseName}`);
   } catch (error) {
     return console.error(error.stack);
