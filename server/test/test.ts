@@ -1,7 +1,7 @@
 import assert from 'assert';
 import mocha from 'mocha';
 import { validFarmDataObject } from '../lib/utils';
-import { FarmData } from '../types/FarmData';
+import { FarmData } from '../types/types';
 
 const { describe, it } = mocha;
 

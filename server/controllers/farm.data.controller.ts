@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { respondError, respondResults } from '../lib/utils';
-import FarmDataService from '../services/FarmDataService';
+import FarmDataService from '../services/farm.data.service';
 
 export const getAllFarmData = async (
   req: Request,

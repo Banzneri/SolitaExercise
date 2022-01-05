@@ -1,5 +1,5 @@
 import { Application } from 'express';
-import * as controller from '../controllers/FarmController';
+import * as controller from '../controllers/farm.controller';
 
 const farmRoutes = (app: Application) => {
   app.get('/farms', controller.getAllFarms);

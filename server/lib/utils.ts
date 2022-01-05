@@ -1,9 +1,8 @@
 import parseCSV from 'csv-parser';
 import { Response } from 'express';
 import fs from 'fs';
-import FarmService from '../services/FarmService';
-import { FarmData } from '../types/FarmData';
-import { RawData } from '../types/RawData';
+import FarmService from '../services/farm.service';
+import { FarmData, RawData } from '../types/types';
 
 export const validFarmDataObject = (farmData: FarmData) => {
   const validTemperature = (temp: number) => temp >= -50 && temp <= 100;

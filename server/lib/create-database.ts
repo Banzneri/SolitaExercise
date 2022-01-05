@@ -21,7 +21,7 @@ const createDatabase = async () => {
     await client.connect();
     await client.query(`CREATE DATABASE ${databaseName}`);
 
-    const filePath = path.join(__dirname, 'init_database.sql');
+    const filePath = path.join(__dirname, 'init-database.sql');
     const initQuery = await fs.promises.readFile(filePath);
     await db.query(initQuery.toString());
     await client.end();

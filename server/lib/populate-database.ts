@@ -2,9 +2,9 @@ import path from 'path';
 import fs from 'fs';
 import progressBar from 'cli-progress';
 import { CSVToArray } from './utils';
-import { FarmData } from '../types/FarmData';
 import db from './db';
-import createDatabase from './createDatabase';
+import createDatabase from './create-database';
+import { FarmData } from '../types/types';
 
 const initialDataPath = path.join(path.resolve(), 'initial_data');
 
