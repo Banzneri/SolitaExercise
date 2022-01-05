@@ -2,46 +2,46 @@ import { Request, Response } from 'express';
 import { respondError, respondResults } from '../lib/utils';
 import FarmDataService from '../services/farm.data.service';
 
-export const getAllFarmData = async (
+export const getAllData = async (
   req: Request,
   res: Response,
 ) => {
   try {
-    const results = await FarmDataService.getAllFarmData();
+    const results = await FarmDataService.getAllData();
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error.message);
   }
 };
 
-export const getFarmDataByFarmId = async (
+export const getDataByFarmId = async (
   req: Request,
   res: Response,
 ) => {
   try {
     const farmId = Number(req.params.farmId);
-    const results = await FarmDataService.getFarmDataByFarmId(farmId);
+    const results = await FarmDataService.getDataByFarmId(farmId);
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error.message);
   }
 };
 
-export const getFarmDataByFarmIdAndSensorType = async (
+export const getDataByFarmIdAndSensor = async (
   req: Request,
   res: Response,
 ) => {
   try {
     const id = Number(req.params.id);
     const { sensor } = req.params;
-    const results = await FarmDataService.getFarmDataByFarmIdAndSensorType(id, sensor);
+    const results = await FarmDataService.getDataByFarmIdAndSensor(id, sensor);
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error.message);
   }
 };
 
-export const getFarmDataByFarmIdAndMonthYear = async (
+export const getMonthlyDataByFarmId = async (
   req: Request,
   res: Response,
 ) => {
@@ -49,14 +49,14 @@ export const getFarmDataByFarmIdAndMonthYear = async (
     const id = Number(req.params.id);
     const year = Number(req.params.year);
     const month = Number(req.params.month);
-    const results = await FarmDataService.getFarmDataByFarmIdAndMonthYear(id, year, month);
+    const results = await FarmDataService.getMonthlyDataByFarmId(id, year, month);
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error.message);
   }
 };
 
-export const getMonthlyAverageByFarmIdAndSensorType = async (
+export const getMonthlyAverageByFarmIdAndSensor = async (
   req: Request,
   res: Response,
 ) => {

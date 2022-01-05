@@ -1,7 +1,7 @@
 import db from '../lib/db';
 
 const FarmDataService = {
-  getAllFarmData: async () => {
+  getAllData: async () => {
     try {
       const query = 'SELECT * FROM farm_data';
       const farmData = await db.query(query);
@@ -11,7 +11,7 @@ const FarmDataService = {
     }
   },
 
-  getFarmDataByFarmId: async (farmId: number) => {
+  getDataByFarmId: async (farmId: number) => {
     try {
       const query = 'SELECT * FROM farm_data WHERE farm_id = $1';
       const farmData = await db.query(query, [farmId]);
@@ -21,7 +21,7 @@ const FarmDataService = {
     }
   },
 
-  getFarmDataByFarmIdAndSensorType: async (
+  getDataByFarmIdAndSensor: async (
     id: number,
     sensor: string,
   ) => {
@@ -34,7 +34,7 @@ const FarmDataService = {
     }
   },
 
-  getFarmDataByFarmIdAndMonthYear: async (
+  getMonthlyDataByFarmId: async (
     farmId: number,
     year: number,
     month: number,
