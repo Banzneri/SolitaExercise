@@ -40,3 +40,18 @@ export const getFarmDataByFarmIdAndSensorType = async (
     return respondError(res, 404, error.message);
   }
 };
+
+export const getFarmDataByFarmIdAndMonthYear = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const farmId = Number(req.params.farmId);
+    const year = Number(req.params.year);
+    const month = Number(req.params.month);
+    const results = await FarmDataService.getFarmDataByFarmIdAndMonthYear(farmId, year, month);
+    return respondResults(res, results);
+  } catch (error) {
+    return respondError(res, 404, error.message);
+  }
+};
