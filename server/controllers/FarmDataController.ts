@@ -26,3 +26,17 @@ export const getFarmDataByFarmId = async (
     return respondError(res, 404, error.message);
   }
 };
+
+export const getFarmDataByFarmIdAndSensorType = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const farmId = Number(req.params.farmId);
+    const { sensorType } = req.params;
+    const results = await FarmDataService.getFarmDataByFarmIdAndSensorType(farmId, sensorType);
+    return respondResults(res, results);
+  } catch (error) {
+    return respondError(res, 404, error.message);
+  }
+};

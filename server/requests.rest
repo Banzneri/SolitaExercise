@@ -1,2 +1,2 @@
-GET http://localhost:3001/farms/name/PartialTech_Research_Farm HTTP/1.1
+GET http://localhost:3001/farmData/farmId/1/sensorType/pH HTTP/1.1
 content-type: application/json

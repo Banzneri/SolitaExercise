@@ -1,10 +1,10 @@
 import { Application } from 'express';
-import * as farmController from '../controllers/FarmController';
+import * as controller from '../controllers/FarmController';
 
 const farmRoutes = (app: Application) => {
-  app.get('/farms', farmController.getAllFarms);
-  app.get('/farms/id/:id', farmController.getFarmById);
-  app.get('/farms/name/:name', farmController.getFarmByName);
+  app.get('/farms', controller.getAllFarms);
+  app.get('/farms/id/:id', controller.getFarmById);
+  app.get('/farms/name/:name', controller.getFarmByName);
 };
 
 export default farmRoutes;

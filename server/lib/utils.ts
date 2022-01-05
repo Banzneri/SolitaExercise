@@ -28,7 +28,7 @@ export const CSVToArray = async (
     const farm = await FarmService.getFarmByName(rawData.location);
     data.farmId = farm[0].id;
     data.datetime = new Date(rawData.datetime);
-    data.sensorType = rawData.sensorType;
+    data.sensorType = rawData.sensorType.toLowerCase();
     data.value = Number(rawData.value);
     return data;
   };
