@@ -1,0 +1,2 @@
+GET http://localhost:3001/farms/name/PartialTech_Research_Farm HTTP/1.1
+content-type: application/json

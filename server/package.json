@@ -4,6 +4,7 @@
   "description": "Backend for the Solita exercise",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node ./app/server.ts",
     "test": "mocha -r ts-node/register ./test/*.ts",
     "createDb": "npx ts-node ./lib/populateDatabase.ts"
   },
