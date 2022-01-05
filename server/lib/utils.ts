@@ -58,7 +58,7 @@ export const CSVToArray = async (
   });
 };
 
-export const respondResults = (res: Response, results: any[]) => (
+export const respondResults = (res: Response, results: any) => (
   results.length === 0
     ? res.status(204).json({ message: 'No results found' })
     : res.status(200).json(results));

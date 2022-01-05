@@ -55,3 +55,21 @@ export const getFarmDataByFarmIdAndMonthYear = async (
     return respondError(res, 404, error.message);
   }
 };
+
+export const getMonthlyAverageByFarmIdAndSensorType = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const farmId = Number(req.params.farmId);
+    const year = Number(req.params.year);
+    const month = Number(req.params.month);
+    const { sensorType } = req.params;
+
+    const result = await FarmDataService
+      .getMonthlyAverageByFarmIdAndSensorType(farmId, year, month, sensorType);
+    return respondResults(res, result);
+  } catch (error) {
+    return respondError(res, 404, error.message);
+  }
+};

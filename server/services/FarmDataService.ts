@@ -52,6 +52,28 @@ const FarmDataService = {
       throw Error('Error getting data by farm id and month/year');
     }
   },
+
+  getMonthlyAverageByFarmIdAndSensorType: async (
+    farmId: number,
+    year: number,
+    month: number,
+    sensorType: string,
+  ) => {
+    try {
+      const query = `
+        SELECT * FROM farm_data
+        WHERE farm_id = $1
+        AND EXTRACT(YEAR FROM time) = $2
+        AND EXTRACT(MONTH FROM time) = $3
+        AND sensor_type = $4
+      `;
+      const farmData = await db.query(query, [farmId, year, month, sensorType]);
+      const values = farmData.rows.map((e) => Number(e.value));
+      return values.reduce((sum, value) => sum + value, 0) / farmData.rows.length;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  },
 };
 
 export default FarmDataService;
