@@ -19,8 +19,8 @@ export const getDataByFarmId = async (
   res: Response,
 ) => {
   try {
-    const farmId = Number(req.params.farmId);
-    const results = await FarmDataService.getDataByFarmId(farmId);
+    const id = Number(req.params.id);
+    const results = await FarmDataService.getDataByFarmId(id);
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error.message);
