@@ -61,13 +61,13 @@ export const getMonthlyAverageByFarmIdAndSensorType = async (
   res: Response,
 ) => {
   try {
-    const farmId = Number(req.params.farmId);
+    const id = Number(req.params.id);
     const year = Number(req.params.year);
     const month = Number(req.params.month);
-    const { sensorType } = req.params;
+    const { sensor } = req.params;
 
     const result = await FarmDataService
-      .getMonthlyAverageByFarmIdAndSensorType(farmId, year, month, sensorType);
+      .getMonthlyAverageByFarmIdAndSensor(id, year, month, sensor);
     return respondResults(res, result);
   } catch (error) {
     return respondError(res, 404, error.message);

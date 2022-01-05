@@ -1,2 +1,2 @@
-GET http://localhost:3001/farmData/average/farmId/1/year/2019/month/7/sensorType/temperature HTTP/1.1
+GET http://localhost:3001/data/farm/1/month/2019&10/sensor/temperature/average HTTP/1.1
 content-type: application/json

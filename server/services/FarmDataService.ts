@@ -53,11 +53,11 @@ const FarmDataService = {
     }
   },
 
-  getMonthlyAverageByFarmIdAndSensorType: async (
-    farmId: number,
+  getMonthlyAverageByFarmIdAndSensor: async (
+    id: number,
     year: number,
     month: number,
-    sensorType: string,
+    sensor: string,
   ) => {
     try {
       const query = `
@@ -67,7 +67,7 @@ const FarmDataService = {
         AND EXTRACT(MONTH FROM time) = $3
         AND sensor_type = $4
       `;
-      const farmData = await db.query(query, [farmId, year, month, sensorType]);
+      const farmData = await db.query(query, [id, year, month, sensor]);
       const values = farmData.rows.map((e) => Number(e.value));
       return values.reduce((sum, value) => sum + value, 0) / farmData.rows.length;
     } catch (error) {
