@@ -4,8 +4,8 @@ const FarmDataService = {
   getAllData: async () => {
     try {
       const query = 'SELECT * FROM farm_data';
-      const farmData = await db.query(query);
-      return farmData.rows;
+      const data = await db.query(query);
+      return data.rows;
     } catch (error) {
       throw Error(`Error getting all data: ${error.message}`);
     }
@@ -14,8 +14,8 @@ const FarmDataService = {
   getDataByFarmId: async (farmId: number) => {
     try {
       const query = 'SELECT * FROM farm_data WHERE farm_id = $1';
-      const farmData = await db.query(query, [farmId]);
-      return farmData.rows;
+      const data = await db.query(query, [farmId]);
+      return data.rows;
     } catch (error) {
       throw Error(`Error getting data by farm id: ${error.message}`);
     }
@@ -27,8 +27,8 @@ const FarmDataService = {
   ) => {
     try {
       const query = 'SELECT * FROM farm_data WHERE farm_id = $1 AND sensor_type = $2';
-      const farmData = await db.query(query, [id, sensor.toLowerCase()]);
-      return farmData.rows;
+      const data = await db.query(query, [id, sensor.toLowerCase()]);
+      return data.rows;
     } catch (error) {
       throw Error(`Error getting sensor data: ${error.message}`);
     }
@@ -46,8 +46,8 @@ const FarmDataService = {
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
       `;
-      const farmData = await db.query(query, [id, year, month]);
-      return farmData.rows;
+      const data = await db.query(query, [id, year, month]);
+      return data.rows;
     } catch (error) {
       throw Error(`Error getting data by month: ${error.message}`);
     }
@@ -67,8 +67,8 @@ const FarmDataService = {
         AND EXTRACT(MONTH FROM time) = $3
         AND sensor_type = $4
       `;
-      const farmData = await db.query(query, [id, year, month, sensor]);
-      return farmData.rows;
+      const data = await db.query(query, [id, year, month, sensor]);
+      return data.rows;
     } catch (error) {
       throw Error(`Error getting monthly data by sensor: ${error.message}`);
     }
@@ -88,9 +88,9 @@ const FarmDataService = {
         AND EXTRACT(MONTH FROM time) = $3
         AND sensor_type = $4
       `;
-      const farmData = await db.query(query, [id, year, month, sensor]);
-      const values = farmData.rows.map((e) => Number(e.value));
-      return values.reduce((sum, value) => sum + value, 0) / farmData.rows.length;
+      const data = await db.query(query, [id, year, month, sensor]);
+      const values = data.rows.map((e) => Number(e.value));
+      return values.reduce((sum, value) => sum + value, 0) / data.rows.length;
     } catch (error) {
       throw Error(`Error getting monthly average: ${error.message}`);
     }
