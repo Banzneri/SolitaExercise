@@ -7,7 +7,7 @@ const FarmDataService = {
       const farmData = await db.query(query);
       return farmData.rows;
     } catch (error) {
-      throw Error('Error getting all data');
+      throw Error(`Error getting all data: ${error.message}`);
     }
   },
 
@@ -17,7 +17,7 @@ const FarmDataService = {
       const farmData = await db.query(query, [farmId]);
       return farmData.rows;
     } catch (error) {
-      throw Error('Error getting data by farm id');
+      throw Error(`Error getting data by farm id: ${error.message}`);
     }
   },
 
@@ -30,7 +30,7 @@ const FarmDataService = {
       const farmData = await db.query(query, [id, sensor.toLowerCase()]);
       return farmData.rows;
     } catch (error) {
-      throw Error('Error getting data by farm id and sensor type');
+      throw Error(`Error getting sensor data: ${error.message}`);
     }
   },
 
@@ -49,7 +49,7 @@ const FarmDataService = {
       const farmData = await db.query(query, [id, year, month]);
       return farmData.rows;
     } catch (error) {
-      throw Error('Error getting data by farm id and month/year');
+      throw Error(`Error getting data by month: ${error.message}`);
     }
   },
 
@@ -70,7 +70,7 @@ const FarmDataService = {
       const farmData = await db.query(query, [id, year, month, sensor]);
       return farmData.rows;
     } catch (error) {
-      throw Error(error.message);
+      throw Error(`Error getting monthly data by sensor: ${error.message}`);
     }
   },
 
@@ -92,7 +92,7 @@ const FarmDataService = {
       const values = farmData.rows.map((e) => Number(e.value));
       return values.reduce((sum, value) => sum + value, 0) / farmData.rows.length;
     } catch (error) {
-      throw Error(error.message);
+      throw Error(`Error getting monthly average: ${error.message}`);
     }
   },
 };
