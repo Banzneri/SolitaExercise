@@ -11,10 +11,10 @@ const FarmDataService = {
     }
   },
 
-  getDataByFarmId: async (farmId: number) => {
+  getDataByFarmId: async (id: number) => {
     try {
       const query = 'SELECT * FROM farm_data WHERE farm_id = $1';
-      const data = await db.query(query, [farmId]);
+      const data = await db.query(query, [id]);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting data by farm id: ${error.message}`);
@@ -82,15 +82,16 @@ const FarmDataService = {
   ) => {
     try {
       const query = `
-        SELECT * FROM farm_data
+        SELECT AVG(value) as average
+        FROM farm_data
         WHERE farm_id = $1
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
         AND sensor_type = $4
       `;
       const data = await db.query(query, [id, year, month, sensor]);
-      const values = data.rows.map((e) => Number(e.value));
-      return values.reduce((sum, value) => sum + value, 0) / data.rows.length;
+      const { average } = data.rows[0];
+      return Number(average);
     } catch (error) {
       throw Error(`Error getting monthly average: ${error.message}`);
     }
