@@ -35,7 +35,7 @@ const FarmDataService = {
   },
 
   getMonthlyDataByFarmId: async (
-    farmId: number,
+    id: number,
     year: number,
     month: number,
   ) => {
@@ -46,7 +46,7 @@ const FarmDataService = {
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
       `;
-      const farmData = await db.query(query, [farmId, year, month]);
+      const farmData = await db.query(query, [id, year, month]);
       return farmData.rows;
     } catch (error) {
       throw Error('Error getting data by farm id and month/year');
