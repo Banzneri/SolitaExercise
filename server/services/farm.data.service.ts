@@ -131,7 +131,7 @@ const FarmDataService = {
       const { min, max } = data.rows[0];
       return { min: Number(min), max: Number(max) };
     } catch (error) {
-      throw Error(`Error getting all time min max sensor value: ${error.message}`);
+      throw Error(`Error getting all time min max: ${error.message}`);
     }
   },
 
