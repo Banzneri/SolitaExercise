@@ -103,3 +103,19 @@ export const getAllTimeMinMaxByFarmIdAndSensor = async (
     return respondError(res, 404, error.message);
   }
 };
+
+export const getMonthlyMinMaxByFarmIdAndSensor = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const id = Number(req.params.id);
+    const year = Number(req.params.year);
+    const month = Number(req.params.month);
+    const { sensor } = req.params;
+    const result = await FarmDataService.getMonthlyMinMaxByFarmIdAndSensor(id, year, month, sensor);
+    return respondResults(res, result);
+  } catch (error) {
+    return respondError(res, 404, error.message);
+  }
+};

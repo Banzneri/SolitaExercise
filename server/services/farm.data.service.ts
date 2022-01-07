@@ -112,7 +112,30 @@ const FarmDataService = {
       const { min, max } = data.rows[0];
       return { min: Number(min), max: Number(max) };
     } catch (error) {
-      throw Error(`Error getting all time min sensor value: ${error.message}`);
+      throw Error(`Error getting all time min max sensor value: ${error.message}`);
+    }
+  },
+
+  getMonthlyMinMaxByFarmIdAndSensor: async (
+    id: number,
+    year: number,
+    month: number,
+    sensor: string,
+  ) => {
+    try {
+      const query = `
+        SELECT MIN(value) as min, MAX(value) as max
+        FROM farm_data
+        WHERE farm_id = $1
+        AND EXTRACT(YEAR FROM time) = $2
+        AND EXTRACT(MONTH FROM time) = $3
+        AND sensor_type = $4
+      `;
+      const data = await db.query(query, [id, year, month, sensor]);
+      const { min, max } = data.rows[0];
+      return { min: Number(min), max: Number(max) };
+    } catch (error) {
+      throw Error(`Error getting monthly min max: ${error.message}`);
     }
   },
 };

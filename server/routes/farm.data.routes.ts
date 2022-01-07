@@ -9,6 +9,7 @@ const farmDataRoutes = (app: Application) => {
   app.get('/data/farm/:id/month/:year&:month/sensor/:sensor', controller.getMonthlyDataByFarmIdAndSensor);
   app.get('/data/farm/:id/month/:year&:month/sensor/:sensor/average', controller.getMonthlyAverageByFarmIdAndSensor);
   app.get('/data/farm/:id/sensor/:sensor/min-max', controller.getAllTimeMinMaxByFarmIdAndSensor);
+  app.get('/data/farm/:id/month/:year&:month/sensor/:sensor/min-max', controller.getMonthlyMinMaxByFarmIdAndSensor);
 };
 
 export default farmDataRoutes;
