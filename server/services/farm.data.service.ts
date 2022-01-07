@@ -74,6 +74,25 @@ const FarmDataService = {
     }
   },
 
+  getAllTimeAverageByFarmIdAndSensor: async (
+    id: number,
+    sensor: string,
+  ) => {
+    try {
+      const query = `
+        SELECT AVG(value) as average
+        FROM farm_data
+        WHERE farm_id = $1
+        AND sensor_type = $2
+      `;
+      const data = await db.query(query, [id, sensor]);
+      const { average } = data.rows[0];
+      return Number(average);
+    } catch (error) {
+      throw Error(`Error getting all time average by farm: ${error.message}`);
+    }
+  },
+
   getMonthlyAverageByFarmIdAndSensor: async (
     id: number,
     year: number,
