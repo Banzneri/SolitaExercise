@@ -34,7 +34,7 @@ const FarmDataService = {
     }
   },
 
-  getMonthlyDataByFarmId: async (
+  getAllMonthlyData: async (
     id: number,
     year: number,
     month: number,
@@ -53,7 +53,7 @@ const FarmDataService = {
     }
   },
 
-  getMonthlyDataByFarmIdAndSensor: async (
+  getMonthlyData: async (
     id: number,
     year: number,
     month: number,
@@ -74,7 +74,7 @@ const FarmDataService = {
     }
   },
 
-  getAllTimeAverageByFarmIdAndSensor: async (
+  getAllTimeAverage: async (
     id: number,
     sensor: string,
   ) => {
@@ -93,7 +93,7 @@ const FarmDataService = {
     }
   },
 
-  getMonthlyAverageByFarmIdAndSensor: async (
+  getMonthlyAverage: async (
     id: number,
     year: number,
     month: number,
@@ -116,7 +116,7 @@ const FarmDataService = {
     }
   },
 
-  getAllTimeMinMaxByFarmIdAndSensor: async (
+  getAllTimeMinMax: async (
     id: number,
     sensor: string,
   ) => {
@@ -135,7 +135,7 @@ const FarmDataService = {
     }
   },
 
-  getMonthlyMinMaxByFarmIdAndSensor: async (
+  getMonthlyMinMax: async (
     id: number,
     year: number,
     month: number,
@@ -158,7 +158,7 @@ const FarmDataService = {
     }
   },
 
-  getDataBetweenDatesBySensor: async (
+  getSensorDataBetweenDates: async (
     id: number,
     startDate: Date,
     endDate: Date,
