@@ -157,6 +157,26 @@ const FarmDataService = {
       throw Error(`Error getting monthly min max: ${error.message}`);
     }
   },
+
+  getDataBetweenDatesBySensor: async (
+    id: number,
+    startDate: Date,
+    endDate: Date,
+    sensor: string,
+  ) => {
+    try {
+      const query = `
+        SELECT * FROM farm_data
+        WHERE farm_id = $1
+        AND time BETWEEN $2 AND $3
+        AND sensor_type = $4
+      `;
+      const data = await db.query(query, [id, startDate, endDate, sensor]);
+      return data.rows;
+    } catch (error) {
+      throw Error(`Error getting data between dates: ${error.message}`);
+    }
+  },
 };
 
 export default FarmDataService;
