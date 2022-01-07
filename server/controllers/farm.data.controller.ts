@@ -82,9 +82,22 @@ export const getMonthlyAverageByFarmIdAndSensor = async (
     const year = Number(req.params.year);
     const month = Number(req.params.month);
     const { sensor } = req.params;
-
     const result = await FarmDataService
       .getMonthlyAverageByFarmIdAndSensor(id, year, month, sensor);
+    return respondResults(res, result);
+  } catch (error) {
+    return respondError(res, 404, error.message);
+  }
+};
+
+export const getAllTimeMinMaxByFarmIdAndSensor = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const id = Number(req.params.id);
+    const { sensor } = req.params;
+    const result = await FarmDataService.getAllTimeMinMaxByFarmIdAndSensor(id, sensor);
     return respondResults(res, result);
   } catch (error) {
     return respondError(res, 404, error.message);
