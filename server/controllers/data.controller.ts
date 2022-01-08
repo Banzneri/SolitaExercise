@@ -6,7 +6,6 @@ import FarmDataService from '../services/data.service';
 const checkInput = (req: Request) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array());
     throw errors.array();
   }
 };
