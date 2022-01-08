@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { param, validationResult } from 'express-validator';
 import { respondError, respondResults } from '../lib/utils';
-import FarmDataService from '../services/farm.data.service';
+import FarmDataService from '../services/data.service';
 
 const checkInput = (req: Request) => {
   const errors = validationResult(req);

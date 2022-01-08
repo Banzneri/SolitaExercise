@@ -1,5 +1,5 @@
 import express from 'express';
-import * as controller from '../controllers/farm.data.controller';
+import * as controller from '../controllers/data.controller';
 
 const monthRouter = express.Router({ mergeParams: true });
 
