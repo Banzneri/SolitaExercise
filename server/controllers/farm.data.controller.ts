@@ -139,7 +139,6 @@ export const getSensorDataBetweenDates = async (
   try {
     const id = Number(req.params.id);
     const { startDate, endDate, sensor } = req.params;
-    console.log(startDate);
     const results = await FarmDataService
       .getSensorDataBetweenDates(id, new Date(startDate), new Date(endDate), sensor);
     return respondResults(res, results);
