@@ -9,15 +9,11 @@ const handleRequest = async (
   handle: Function,
   params: Array<any>,
 ) => {
-  const checkInputErrors = (request: Request) => {
-    const errors = validationResult(request);
+  try {
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw errors.array();
     }
-  };
-
-  try {
-    checkInputErrors(req);
     const results = await handle(...params);
     return respondResults(res, results);
   } catch (error) {
@@ -56,8 +52,8 @@ export const getDataByFarmIdAndSensor = async (
   res: Response,
 ) => {
   const id = Number(req.params.id);
-
   const { sensor } = req.params;
+
   await handleRequest(
     req,
     res,
