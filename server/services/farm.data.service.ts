@@ -13,6 +13,7 @@ const FarmDataService = {
 
   getDataByFarmId: async (id: number) => {
     try {
+      console.log(id);
       const query = 'SELECT * FROM farm_data WHERE farm_id = $1';
       const data = await db.query(query, [id]);
       return data.rows;
