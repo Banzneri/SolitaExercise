@@ -1,12 +1,27 @@
 import { Request, Response } from 'express';
 import { param, validationResult } from 'express-validator';
 import { respondError, respondResults } from '../lib/utils';
-import FarmDataService from '../services/data.service';
+import DataService from '../services/data.service';
 
-const checkInput = (req: Request) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throw errors.array();
+const handleRequest = async (
+  req: Request,
+  res: Response,
+  handle: Function,
+  params: Array<any>,
+) => {
+  const checkInputErrors = (request: Request) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      throw errors.array();
+    }
+  };
+
+  try {
+    checkInputErrors(req);
+    const results = await handle(...params);
+    return respondResults(res, results);
+  } catch (error) {
+    return respondError(res, 404, error);
   }
 };
 
@@ -14,166 +29,168 @@ export const getAllData = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const results = await FarmDataService.getAllData();
-    return respondResults(res, results);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  await handleRequest(
+    req,
+    res,
+    DataService.getAllData,
+    [],
+  );
 };
 
 export const getDataByFarmId = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const results = await FarmDataService.getDataByFarmId(id);
-    return respondResults(res, results);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getDataByFarmId,
+    [id],
+  );
 };
 
 export const getDataByFarmIdAndSensor = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const { sensor } = req.params;
-    const results = await FarmDataService.getDataByFarmIdAndSensor(id, sensor);
-    return respondResults(res, results);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+
+  const { sensor } = req.params;
+  await handleRequest(
+    req,
+    res,
+    DataService.getDataByFarmIdAndSensor,
+    [id, sensor],
+  );
 };
 
 export const getAllMonthlyData = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const year = Number(req.params.year);
-    const month = Number(req.params.month);
-    const results = await FarmDataService.getAllMonthlyData(id, year, month);
-    return respondResults(res, results);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+  const year = Number(req.params.year);
+  const month = Number(req.params.month);
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getAllMonthlyData,
+    [id, year, month],
+  );
 };
 
 export const getMonthlyData = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const year = Number(req.params.year);
-    const month = Number(req.params.month);
-    const { sensor } = req.params;
-    const results = await FarmDataService.getMonthlyData(id, year, month, sensor);
-    return respondResults(res, results);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+  const year = Number(req.params.year);
+  const month = Number(req.params.month);
+  const { sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getMonthlyData,
+    [id, year, month, sensor],
+  );
 };
 
 export const getAllTimeAverage = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const { sensor } = req.params;
-    const result = await FarmDataService.getAllTimeAverage(id, sensor);
-    return respondResults(res, result);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+  const { sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getAllTimeAverage,
+    [id, sensor],
+  );
 };
 
 export const getMonthlyAverage = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const year = Number(req.params.year);
-    const month = Number(req.params.month);
-    const { sensor } = req.params;
-    const result = await FarmDataService.getMonthlyAverage(id, year, month, sensor);
-    return respondResults(res, result);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+  const year = Number(req.params.year);
+  const month = Number(req.params.month);
+  const { sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getMonthlyAverage,
+    [id, year, month, sensor],
+  );
 };
 
 export const getAllTimeMinMax = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const { sensor } = req.params;
-    const result = await FarmDataService.getAllTimeMinMax(id, sensor);
-    return respondResults(res, result);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+  const { sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getAllTimeMinMax,
+    [id, sensor],
+  );
 };
 
 export const getMonthlyMinMax = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const year = Number(req.params.year);
-    const month = Number(req.params.month);
-    const { sensor } = req.params;
-    const result = await FarmDataService.getMonthlyMinMax(id, year, month, sensor);
-    return respondResults(res, result);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+  const year = Number(req.params.year);
+  const month = Number(req.params.month);
+  const { sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getMonthlyMinMax,
+    [id, year, month, sensor],
+  );
 };
 
 export const getSensorDataBetweenDates = async (
   req: Request,
   res: Response,
 ) => {
-  try {
-    checkInput(req);
-    const id = Number(req.params.id);
-    const { startDate, endDate, sensor } = req.params;
-    const results = await FarmDataService
-      .getSensorDataBetweenDates(id, new Date(startDate), new Date(endDate), sensor);
-    return respondResults(res, results);
-  } catch (error) {
-    return respondError(res, 404, error);
-  }
+  const id = Number(req.params.id);
+  const { startDate, endDate, sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getSensorDataBetweenDates,
+    [id, startDate, endDate, sensor],
+  );
 };
 
 export const validate = (method: string) => {
   const validId = () => param('id', 'id must be an integer')
     .isInt();
+
   const validSensor = () => param('sensor', 'wrong sensor type')
     .isIn(['ph', 'rainfall', 'temperature']);
+
   const validYear = () => param('year', 'invalid year')
     .isInt({ min: 1900, max: 2050 });
+
   const validMonth = () => param('month', 'invalid month')
     .isInt({ min: 1, max: 12 });
+
   const validDate = (date: string) => param(date, `invalid ${date}`)
     .isDate();
 

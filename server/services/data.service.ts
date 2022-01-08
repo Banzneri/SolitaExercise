@@ -1,6 +1,6 @@
 import db from '../lib/db';
 
-const FarmDataService = {
+const DataService = {
   getAllData: async () => {
     try {
       const query = 'SELECT * FROM farm_data';
@@ -180,4 +180,4 @@ const FarmDataService = {
   },
 };
 
-export default FarmDataService;
+export default DataService;
