@@ -6,7 +6,8 @@ import FarmDataService from '../services/farm.data.service';
 const checkInput = (req: Request) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw Error('Invalid input');
+    console.log(errors.array());
+    throw errors.array();
   }
 };
 
@@ -33,7 +34,7 @@ export const getDataByFarmId = async (
     const results = await FarmDataService.getDataByFarmId(id);
     return respondResults(res, results);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -48,7 +49,7 @@ export const getDataByFarmIdAndSensor = async (
     const results = await FarmDataService.getDataByFarmIdAndSensor(id, sensor);
     return respondResults(res, results);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -64,7 +65,7 @@ export const getAllMonthlyData = async (
     const results = await FarmDataService.getAllMonthlyData(id, year, month);
     return respondResults(res, results);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -81,7 +82,7 @@ export const getMonthlyData = async (
     const results = await FarmDataService.getMonthlyData(id, year, month, sensor);
     return respondResults(res, results);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -96,7 +97,7 @@ export const getAllTimeAverage = async (
     const result = await FarmDataService.getAllTimeAverage(id, sensor);
     return respondResults(res, result);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -113,7 +114,7 @@ export const getMonthlyAverage = async (
     const result = await FarmDataService.getMonthlyAverage(id, year, month, sensor);
     return respondResults(res, result);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -128,7 +129,7 @@ export const getAllTimeMinMax = async (
     const result = await FarmDataService.getAllTimeMinMax(id, sensor);
     return respondResults(res, result);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -145,7 +146,7 @@ export const getMonthlyMinMax = async (
     const result = await FarmDataService.getMonthlyMinMax(id, year, month, sensor);
     return respondResults(res, result);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 
@@ -161,7 +162,7 @@ export const getSensorDataBetweenDates = async (
       .getSensorDataBetweenDates(id, new Date(startDate), new Date(endDate), sensor);
     return respondResults(res, results);
   } catch (error) {
-    return respondError(res, 404, error.message);
+    return respondError(res, 404, error);
   }
 };
 

@@ -65,5 +65,5 @@ export const respondResults = (res: Response, results: any) => (
 export const respondError = (
   res: Response,
   code: number,
-  message: string,
-) => res.status(code).json({ message });
+  error: any,
+) => res.status(code).json({ error });
