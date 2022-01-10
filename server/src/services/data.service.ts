@@ -13,7 +13,11 @@ const DataService = {
 
   getDataByFarmId: async (id: number) => {
     try {
-      const query = 'SELECT * FROM farm_data WHERE farm_id = $1';
+      const query = `
+        SELECT farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
+        FROM farm_data
+        WHERE farm_id = $1
+      `;
       const data = await db.query(query, [id]);
       return data.rows;
     } catch (error) {
@@ -27,7 +31,11 @@ const DataService = {
     sensor: string,
   ) => {
     try {
-      const query = 'SELECT * FROM farm_data WHERE farm_id = $1 AND sensor_type = $2';
+      const query = `
+        SELECT farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
+        FROM farm_data
+        WHERE farm_id = $1
+        AND sensor_type = $2`;
       const data = await db.query(query, [id, sensor]);
       return data.rows;
     } catch (error) {
@@ -42,7 +50,8 @@ const DataService = {
   ) => {
     try {
       const query = `
-        SELECT * FROM farm_data
+        SELECT farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
+        FROM farm_data
         WHERE farm_id = $1
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
@@ -62,7 +71,8 @@ const DataService = {
   ) => {
     try {
       const query = `
-        SELECT * FROM farm_data
+        SELECT farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
+        FROM farm_data
         WHERE farm_id = $1
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
@@ -167,7 +177,8 @@ const DataService = {
   ) => {
     try {
       const query = `
-        SELECT * FROM farm_data
+        SELECT farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
+        FROM farm_data
         WHERE farm_id = $1
         AND time BETWEEN $2 AND $3
         AND sensor_type = $4

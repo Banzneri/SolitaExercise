@@ -179,8 +179,8 @@ export const validate = (method: string) => {
     .isInt();
 
   const validSensor = () => param('sensor', 'wrong sensor type')
-    .isIn(['ph', 'rainfall', 'temperature'])
-    .toLowerCase();
+    .toLowerCase()
+    .isIn(['ph', 'rainfall', 'temperature']);
 
   const validYear = () => param('year', 'invalid year')
     .isInt({ min: 1900, max: 2050 });

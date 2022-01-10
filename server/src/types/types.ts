@@ -5,8 +5,16 @@ export interface Farm {
 
 export interface FarmData {
   farmId: number,
-  datetime: Date,
+  dateTime: Date,
   sensorType: string,
+  value: number
+}
+
+export interface ResponseData {
+  id: number,
+  farm_id: number,
+  time: Date,
+  sensor_type: string,
   value: number
 }
 

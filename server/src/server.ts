@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dataRouter from './routes/data.router';
 import monthRouter from './routes/month.router';
 
@@ -7,6 +8,7 @@ const app = express();
 const port = 3001;
 
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 dataRouter.use('/month/:year&:month', monthRouter);

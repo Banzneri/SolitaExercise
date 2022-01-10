@@ -54,7 +54,7 @@ fs.readdir(initialDataPath, async (error, files) => {
 
     await db.query(query, [
       farm.farmId,
-      farm.datetime,
+      farm.dateTime,
       farm.sensorType,
       farm.value]);
   }
