@@ -16,7 +16,6 @@
     ],
     "lib": [
       "es6",
-      "dom"
     ],
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -26,8 +25,8 @@
 },
   "include": [
     "**/*.ts",
-    "**/*.js"
-, "client/src/App.tsx", "client/src/index.tsx"  ],
+    "**/*.js",
+  ],
   "exclude": [
     "node_modules",
   ]
