@@ -1,5 +1,6 @@
 {
-  "compilerOptions": { /* Docs: https://www.typescriptlang.org/tsconfig */
+  "compilerOptions": {
+    "jsx": "react",
     "target": "ES2020",
     "module": "commonjs",
     "outDir": "bin",
@@ -14,7 +15,8 @@
       "node"
     ],
     "lib": [
-      "es6"
+      "es6",
+      "dom"
     ],
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -25,7 +27,7 @@
   "include": [
     "**/*.ts",
     "**/*.js"
-  ],
+, "client/src/App.tsx", "client/src/index.tsx"  ],
   "exclude": [
     "node_modules",
   ]
