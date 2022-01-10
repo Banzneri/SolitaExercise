@@ -28,7 +28,7 @@ const DataService = {
   ) => {
     try {
       const query = 'SELECT * FROM farm_data WHERE farm_id = $1 AND sensor_type = $2';
-      const data = await db.query(query, [id, sensor.toLowerCase()]);
+      const data = await db.query(query, [id, sensor]);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting sensor data: ${error.message}`);
