@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
+import path from 'path';
 import pg from 'pg';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const { Pool } = pg;
 
@@ -12,5 +13,7 @@ const db = new Pool({
   password: process.env.DB_PASSWORD,
   port: +(process.env.DB_PORT || ''),
 });
+
+console.log(process.env.DB_USER);
 
 export default db;
