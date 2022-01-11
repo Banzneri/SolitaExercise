@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Container } from '@mui/material';
 import { FarmData } from './types/types';
 import DataTable from './components/data-table/DataTable';
 import { getDataByFarmIdAndSensor } from './services/DataService';
@@ -15,9 +16,9 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <Container className="App">
       <DataTable data={data} />
-    </div>
+    </Container>
   );
 };
 
