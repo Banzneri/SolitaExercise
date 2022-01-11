@@ -15,5 +15,6 @@ dataRouter.use('/month/:year&:month', monthRouter);
 app.use('/data/farm/:id', dataRouter);
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`App running on port ${port}.`);
 });
