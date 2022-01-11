@@ -23,7 +23,9 @@
     "rules": {
         "import/extensions": "off",
         "react/jsx-filename-extension": "off",
-        "react/function-component-definition": "off"
+        "react/function-component-definition": "off",
+        "react/react-in-jsx-scope": "off",
+        "indent": "off"
     },
     "settings": {
         "import/resolver": {
