@@ -12,7 +12,7 @@ const handleRequest = async (
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      throw errors.array();
+      return respondError(res, 404, errors);
     }
     const results = await handle(...params);
     return respondResults(res, results);

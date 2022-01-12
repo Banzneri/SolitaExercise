@@ -8,6 +8,7 @@ import {
   Paper,
   TableCell,
 } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 import { FarmData } from '../../types/types';
 import DataRow from './DataRow';
 
@@ -17,17 +18,16 @@ interface DataTableProps {
 
 const DataTable: React.FC<DataTableProps> = ({ data }) => (
   <TableContainer component={Paper}>
-    <Table aria-label="simple table">
+    <Table aria-label="simple table" size="small">
       <TableHead>
         <TableRow>
-          <TableCell align="right">Farm id</TableCell>
-          <TableCell align="right">Time</TableCell>
+          <TableCell>Time</TableCell>
           <TableCell align="right">Sensor</TableCell>
           <TableCell align="right">Value</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((e) => <DataRow data={e} />)}
+        {data.map((e) => <DataRow key={uuidv4()} data={e} />)}
       </TableBody>
     </Table>
   </TableContainer>

@@ -1,10 +1,10 @@
-import { Application } from 'express';
+import express from 'express';
 import * as controller from '../controllers/farm.controller';
 
-const farmRoutes = (app: Application) => {
-  app.get('/farms', controller.getAllFarms);
-  app.get('/farms/id', controller.getFarmById);
-  app.get('/farms/name/:name', controller.getFarmByName);
-};
+const farmRouter = express.Router({ mergeParams: true });
 
-export default farmRoutes;
+farmRouter.get('/', controller.getAllFarms);
+farmRouter.get('/id/:id', controller.getFarmById);
+farmRouter.get('/name/:name', controller.getFarmByName);
+
+export default farmRouter;

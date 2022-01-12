@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001/data';
+const BASE_URL = 'http://localhost:3001/data/farm';
 
 export const getDataByFarmId = async (id: number) => {
-  const response = await axios.get(`${BASE_URL}/farm/${id}`);
+  const response = await axios.get(`${BASE_URL}/${id}`);
   return response.data;
 };
 
 export const getDataByFarmIdAndSensor = async (id: number, sensor: string) => {
-  const response = await axios
-    .get(`${BASE_URL}/farm/${id}/sensor/${sensor}`);
+  const response = await axios.get(`${BASE_URL}/${id}/sensor/${sensor}`);
   return response.data;
 };
 
@@ -18,8 +17,7 @@ export const getMonthlyData = async (
   year: number,
   month: number,
 ) => {
-  const response = await axios
-    .get(`${BASE_URL}/farm/${id}/month/${year}&${month}`);
+  const response = await axios.get(`${BASE_URL}/${id}/month/${year}&${month}`);
   return response.data;
 };
 
@@ -30,7 +28,7 @@ export const getMonthlySensorData = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/farm/${id}/month/${year}&${month}/sensor/${sensor}`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}`);
   return response.data;
 };
 
@@ -39,7 +37,7 @@ export const getAllTimeAverage = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/farm/${id}/sensor/${sensor}/average`);
+    .get(`${BASE_URL}/${id}/sensor/${sensor}/average`);
   return response.data;
 };
 
@@ -50,7 +48,7 @@ export const getMonthlyAverage = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/farm/${id}/month/${year}&${month}/sensor/${sensor}/average`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/average`);
   return response.data;
 };
 
@@ -59,7 +57,7 @@ export const getAllTimeMinMax = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/farm/${id}/sensor/${sensor}/min-max`);
+    .get(`${BASE_URL}/${id}/sensor/${sensor}/min-max`);
   return response.data;
 };
 
@@ -70,7 +68,7 @@ export const getMonthlyMinMax = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/farm/${id}/month/${year}&${month}/sensor/${sensor}/min-max`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/min-max`);
   return response.data;
 };
 
@@ -81,6 +79,6 @@ export const getSensorDataBetweenDates = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/farm/${id}/timespan/${start.toISOString()}&${end.toISOString()}/sensor/${sensor}`);
+    .get(`${BASE_URL}/${id}/timespan/${start.toISOString()}&${end.toISOString()}/sensor/${sensor}`);
   return response.data;
 };
