@@ -6,7 +6,7 @@ import db from './db';
 import createDatabase from './create-database';
 import { FarmData } from '../types/types';
 
-const initialDataPath = path.join(path.resolve(), 'initial-data');
+const initialDataPath = path.join(__dirname, '..', 'initial-data');
 
 const getData = async (
   files: string[],

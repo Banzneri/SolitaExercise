@@ -22,53 +22,45 @@ const App = () => {
   const [pages, setPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
 
+  const handleSearch = async (page: number) => {
+    const data = sensor !== 'any'
+      ? await getDataByFarmIdAndSensor(farmId, sensor, page)
+      : await getDataByFarmId(farmId, page);
+    setData(data);
+  };
+
   useEffect(() => {
     const update = async () => {
       const records = sensor !== 'any'
         ? await getNumOfRecordsByFarmIdAndSensor(farmId, sensor)
         : await getNumOfRecordsByFarmId((farmId));
-      setPages(Math.floor(records / 15));
+      setPages(Math.ceil(records / 15));
+      await handleSearch(page);
     };
     update();
-  }, [sensor, farmId]);
-
-  const handleSearch = async (page: number) => {
-    const data = sensor !== 'any'
-      ? await getDataByFarmIdAndSensor(farmId, sensor, page)
-      : await getDataByFarmId(farmId);
-    setData(data);
-  };
+  }, [sensor, farmId, page]);
 
   const handleFarmChange = async (e: SelectChangeEvent) => {
-    const id = Number(e.target.value);
+    const id = e.target.value;
     setPage(1);
-    setFarmId(id);
-    await handleSearch(page);
+    setFarmId(Number(id));
   };
 
-  const handleSensorChange = async (e: ChangeEvent) => {
-    const element = e.target as HTMLInputElement;
-    const sensor = element.value;
+  const handleSensorChange = async (e: ChangeEvent, val: string) => {
     setPage(1);
-    setSensor(sensor);
-    await handleSearch(page);
+    setSensor(val);
   };
 
   const handlePageChange = async (e: ChangeEvent, page: number) => {
     setPage(page);
-    await handleSearch(page);
-  };
-
-  const headerStyle = {
-    paddingBottom: '0.5em',
   };
 
   return (
     <Container className="App">
-      <Typography sx={headerStyle} variant="h2">Farms</Typography>
+      <Typography sx={{ my: '3rem' }} variant="h2">Farm data viewer</Typography>
       <FarmListContainer handleFarmChange={handleFarmChange} />
       <SensorSelection handleSensorChange={handleSensorChange} />
-      <DataTable data={data} pages={pages} handlePageChange={handlePageChange} />
+      <DataTable data={data} pages={pages} handlePageChange={handlePageChange} page={page} />
     </Container>
   );
 };

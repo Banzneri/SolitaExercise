@@ -13,21 +13,24 @@ enum Sensor {
   Temperature = 'temperature',
 }
 
+const styles = {
+  padding: '1rem 0 1rem 1.5rem',
+};
+
 interface SensorSelectionProps {
-  handleSensorChange(e: ChangeEvent): void
+  handleSensorChange(e: ChangeEvent, val: string): void
 }
 
 const SensorSelection: FC<SensorSelectionProps> = ({
   handleSensorChange,
 }) => (
-  <FormControl component="fieldset">
-    <FormLabel component="legend">Sensors</FormLabel>
+  <FormControl sx={styles} component="fieldset">
     <RadioGroup
       row
       aria-label="sensor"
       defaultValue="any"
       name="radio-buttons-group"
-      onChange={(e) => handleSensorChange(e)}
+      onChange={(e, val) => handleSensorChange(e, val)}
     >
       <FormControlLabel value="any" control={<Radio />} label="any" />
       <FormControlLabel

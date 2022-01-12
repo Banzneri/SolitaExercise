@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001/farms';
+const BASE_URL = 'http://172.18.195.65:3001/farms';
 
 export const getAllFarms = async () => {
   const response = await axios.get(`${BASE_URL}`);

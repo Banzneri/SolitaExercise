@@ -45,6 +45,8 @@ export const CSVToArray = async (
           const farm = await convertTypes(rawData);
           if (validFarmDataObject(farm)) {
             farms.push(farm);
+          } else {
+            console.log(farm);
           }
         }
       })

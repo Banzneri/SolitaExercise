@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableRow, TableCell } from '@mui/material';
+import { TableRow, TableCell, styled } from '@mui/material';
 import { FarmData } from '../../types/types';
 
 interface DataRowProps {
