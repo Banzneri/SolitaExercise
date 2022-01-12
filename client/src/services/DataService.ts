@@ -2,13 +2,14 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3001/data/farm';
 
-export const getDataByFarmId = async (id: number) => {
-  const response = await axios.get(`${BASE_URL}/${id}/?page=1`);
+export const getDataByFarmId = async (id: number, page?: number) => {
+  const response = await axios.get(`${BASE_URL}/${id}/?page=${page || 1}`);
   return response.data;
 };
 
-export const getDataByFarmIdAndSensor = async (id: number, sensor: string) => {
-  const response = await axios.get(`${BASE_URL}/${id}/sensor/${sensor}/?page=1`);
+export const getDataByFarmIdAndSensor = async (id: number, sensor: string, page?: number) => {
+  const response = await axios
+    .get(`${BASE_URL}/${id}/sensor/${sensor}/?page=${page || 1}`);
   return response.data;
 };
 
@@ -81,4 +82,19 @@ export const getSensorDataBetweenDates = async (
   const response = await axios
     .get(`${BASE_URL}/${id}/timespan/${start.toISOString()}&${end.toISOString()}/sensor/${sensor}`);
   return response.data;
+};
+
+export const getNumOfRecordsByFarmId = async (
+  id: number,
+) => {
+  const response = await axios.get(`${BASE_URL}/${id}/total`);
+  return parseInt(response.data, 10);
+};
+
+export const getNumOfRecordsByFarmIdAndSensor = async (
+  id: number,
+  sensor: string,
+) => {
+  const response = await axios.get(`${BASE_URL}/${id}/sensor/${sensor}/total`);
+  return parseInt(response.data, 10);
 };

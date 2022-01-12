@@ -213,12 +213,12 @@ const DataService = {
   ) => {
     try {
       const query = `
-        SELECT COUNT(*)
+        SELECT COUNT(*) as records
         FROM farm_data
         WHERE farm_id = $1
       `;
       const data = await db.query(query, [id]);
-      return data.rows;
+      return data.rows[0].records;
     } catch (error) {
       throw Error(`Error getting total number of records by farm: ${error.message}`);
     }
@@ -230,13 +230,13 @@ const DataService = {
   ) => {
     try {
       const query = `
-        SELECT COUNT(*)
+        SELECT COUNT(*) as records
         FROM farm_data
         WHERE farm_id = $1
         AND sensor_type = $2
       `;
       const data = await db.query(query, [id, sensor]);
-      return data.rows;
+      return data.rows[0].records;
     } catch (error) {
       throw Error(`Error getting total number of records by farm id and sensor: ${error.message}`);
     }

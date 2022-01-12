@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import {
   Table,
   TableContainer,
@@ -8,15 +8,22 @@ import {
   Paper,
   TableCell,
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { FarmData } from '../../types/types';
 import DataRow from './DataRow';
+import PaginationBar from './PaginationBar';
 
 interface DataTableProps {
   data: FarmData[]
+  pages: number
+  handlePageChange(e: ChangeEvent<unknown>, page: number): void
 }
 
-const DataTable: React.FC<DataTableProps> = ({ data }) => (
+const DataTable: React.FC<DataTableProps> = ({
+  data,
+  pages,
+  handlePageChange,
+}) => (
   <TableContainer component={Paper}>
     <Table aria-label="simple table" size="small">
       <TableHead>
@@ -27,9 +34,10 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((e) => <DataRow key={uuidv4()} data={e} />)}
+        {data.map((e) => <DataRow key={uuid()} data={e} />)}
       </TableBody>
     </Table>
+    {data && <PaginationBar pages={pages} handlePageChange={handlePageChange} />}
   </TableContainer>
 );
 
