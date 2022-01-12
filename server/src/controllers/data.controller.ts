@@ -9,12 +9,15 @@ const handleRequest = async (
   handle: Function,
   params: Array<any>,
 ) => {
+  const page = req.query.page
+    ? Number(req.query.page)
+    : 1;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return respondError(res, 400, errors);
   }
   try {
-    const results = await handle(...params);
+    const results = await handle(...params, page);
     return respondResults(res, results);
   } catch (error) {
     return respondError(res, 404, error);
@@ -174,6 +177,35 @@ export const getSensorDataBetweenDates = async (
   );
 };
 
+export const getNumOfRecordsByFarmId = async (
+  req: Request,
+  res: Response,
+) => {
+  const id = Number(req.params.id);
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getNumOfRecordsByFarmId,
+    [id],
+  );
+};
+
+export const getNumOfRecordsByFarmIdAndSensor = async (
+  req: Request,
+  res: Response,
+) => {
+  const id = Number(req.params.id);
+  const { sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getNumOfRecordsByFarmIdAndSensor,
+    [id, sensor],
+  );
+};
+
 export const validate = (method: string) => {
   const validId = () => param('id', 'id must be an integer')
     .isInt();
@@ -243,6 +275,15 @@ export const validate = (method: string) => {
         validId(),
         validDate('startDate'),
         validDate('endDate'),
+        validSensor(),
+      ];
+    case 'getNumOfRecordsByFarmId':
+      return [
+        validId(),
+      ];
+    case 'getNumOfRecordsByFarmIdAndSensor':
+      return [
+        validId(),
         validSensor(),
       ];
     default: return [];

@@ -1,28 +1,35 @@
 import db from '../lib/db';
 
+const perPage = 15;
+
+const getOffset = (page: number) => (page - 1) * perPage;
+
 // TODO: add pagination
 const DataService = {
-  getAllData: async () => {
+  getAllData: async (page: number) => {
     try {
-      const query = 'SELECT * FROM farm_data';
-      const data = await db.query(query);
+      const query = `
+        SELECT * FROM farm_data
+        LIMIT $1 OFFSET $2
+      `;
+      const data = await db.query(query, [perPage, getOffset(page)]);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting all data: ${error.message}`);
     }
   },
 
-  getDataByFarmId: async (id: number) => {
+  getDataByFarmId: async (id: number, page: number) => {
     try {
       const query = `
-        SELECT farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
+        SELECT id, farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
         FROM farm_data
         WHERE farm_id = $1
+        LIMIT $2 OFFSET $3
       `;
-      const data = await db.query(query, [id]);
+      const data = await db.query(query, [id, perPage, getOffset(page)]);
       return data.rows;
     } catch (error) {
-      console.log(error);
       throw Error(`Error getting data by farm id: ${error.message}`);
     }
   },
@@ -30,14 +37,17 @@ const DataService = {
   getDataByFarmIdAndSensor: async (
     id: number,
     sensor: string,
+    page: number,
   ) => {
     try {
       const query = `
         SELECT farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
         FROM farm_data
         WHERE farm_id = $1
-        AND sensor_type = $2`;
-      const data = await db.query(query, [id, sensor]);
+        AND sensor_type = $2
+        LIMIT $3 OFFSET $4
+       `;
+      const data = await db.query(query, [id, sensor, perPage, getOffset(page)]);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting sensor data: ${error.message}`);
@@ -48,6 +58,7 @@ const DataService = {
     id: number,
     year: number,
     month: number,
+    page: number,
   ) => {
     try {
       const query = `
@@ -56,8 +67,9 @@ const DataService = {
         WHERE farm_id = $1
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
+        LIMIT $4 OFFSET $5
       `;
-      const data = await db.query(query, [id, year, month]);
+      const data = await db.query(query, [id, year, month, perPage, getOffset(page)]);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting data by month: ${error.message}`);
@@ -69,6 +81,7 @@ const DataService = {
     year: number,
     month: number,
     sensor: string,
+    page: number,
   ) => {
     try {
       const query = `
@@ -78,8 +91,12 @@ const DataService = {
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
         AND sensor_type = $4
+        LIMIT $5 OFFSET $6
       `;
-      const data = await db.query(query, [id, year, month, sensor]);
+      const data = await db.query(
+        query,
+        [id, year, month, sensor, perPage, getOffset(page)],
+      );
       return data.rows;
     } catch (error) {
       throw Error(`Error getting monthly data by sensor: ${error.message}`);
@@ -188,6 +205,40 @@ const DataService = {
       return data.rows;
     } catch (error) {
       throw Error(`Error getting data between dates: ${error.message}`);
+    }
+  },
+
+  getNumOfRecordsByFarmId: async (
+    id: number,
+  ) => {
+    try {
+      const query = `
+        SELECT COUNT(*)
+        FROM farm_data
+        WHERE farm_id = $1
+      `;
+      const data = await db.query(query, [id]);
+      return data.rows;
+    } catch (error) {
+      throw Error(`Error getting total number of records by farm: ${error.message}`);
+    }
+  },
+
+  getNumOfRecordsByFarmIdAndSensor: async (
+    id: number,
+    sensor: string,
+  ) => {
+    try {
+      const query = `
+        SELECT COUNT(*)
+        FROM farm_data
+        WHERE farm_id = $1
+        AND sensor_type = $2
+      `;
+      const data = await db.query(query, [id, sensor]);
+      return data.rows;
+    } catch (error) {
+      throw Error(`Error getting total number of records by farm id and sensor: ${error.message}`);
     }
   },
 };

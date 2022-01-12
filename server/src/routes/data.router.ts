@@ -28,5 +28,15 @@ dataRouter.get(
   controller.validate('getSensorDataBetweenDates'),
   controller.getSensorDataBetweenDates,
 );
+dataRouter.get(
+  '/total',
+  controller.validate('getNumOfRecordsByFarmId'),
+  controller.getNumOfRecordsByFarmId,
+);
+dataRouter.get(
+  '/sensor/:sensor/total',
+  controller.validate('getNumOfRecordsByFarmIdAndSensor'),
+  controller.getNumOfRecordsByFarmIdAndSensor,
+);
 
 export default dataRouter;

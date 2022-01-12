@@ -3,12 +3,12 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:3001/data/farm';
 
 export const getDataByFarmId = async (id: number) => {
-  const response = await axios.get(`${BASE_URL}/${id}`);
+  const response = await axios.get(`${BASE_URL}/${id}/?page=1`);
   return response.data;
 };
 
 export const getDataByFarmIdAndSensor = async (id: number, sensor: string) => {
-  const response = await axios.get(`${BASE_URL}/${id}/sensor/${sensor}`);
+  const response = await axios.get(`${BASE_URL}/${id}/sensor/${sensor}/?page=1`);
   return response.data;
 };
 
