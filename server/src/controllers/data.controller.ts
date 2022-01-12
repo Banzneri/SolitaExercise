@@ -9,11 +9,11 @@ const handleRequest = async (
   handle: Function,
   params: Array<any>,
 ) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return respondError(res, 400, errors);
+  }
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return respondError(res, 404, errors);
-    }
     const results = await handle(...params);
     return respondResults(res, results);
   } catch (error) {

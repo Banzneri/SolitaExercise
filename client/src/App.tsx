@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from 'react';
 import {
   Button,
-  Container,
-  SelectChangeEvent,
+  Container, Grid,
+  SelectChangeEvent, Typography,
 } from '@mui/material';
 import { FarmData } from './types/types';
 import DataTable from './components/DataTable/DataTable';
@@ -36,12 +36,26 @@ const App = () => {
     setData(data);
   };
 
+  const headerStyle = {
+    paddingBottom: '0.5em',
+  };
+
+  const gridStyle = {
+    margin: '1em',
+  };
+
+  const buttonStyle = {
+    margin: '1em',
+  };
+
   return (
     <Container className="App">
-      <h1>Farms</h1>
+      <Typography sx={headerStyle} variant="h2">Farms</Typography>
       <FarmListContainer handleFarmChange={handleFarmChange} />
-      <SensorSelection handleSensorChange={handleSensorChange} />
-      <Button variant="contained" onClick={handleSearch}>Search</Button>
+      <Grid sx={gridStyle} container>
+        <SensorSelection handleSensorChange={handleSensorChange} />
+        <Button sx={buttonStyle} variant="contained" onClick={handleSearch}>Search</Button>
+      </Grid>
       <DataTable data={data} />
     </Container>
   );

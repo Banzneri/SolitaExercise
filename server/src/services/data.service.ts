@@ -1,5 +1,6 @@
 import db from '../lib/db';
 
+// TODO: add pagination
 const DataService = {
   getAllData: async () => {
     try {
