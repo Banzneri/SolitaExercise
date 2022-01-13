@@ -241,6 +241,48 @@ const DataService = {
       throw Error(`Error getting total number of records by farm id and sensor: ${error.message}`);
     }
   },
+
+  getMonthlyNumOfRecordsByFarmId: async (
+    id: number,
+    year: number,
+    month: number,
+  ) => {
+    try {
+      const query = `
+        SELECT COUNT(*) as records
+        FROM farm_data
+        WHERE farm_id = $1
+        AND EXTRACT(YEAR FROM time) = $2
+        AND EXTRACT(MONTH FROM time) = $3
+      `;
+      const data = await db.query(query, [id, year, month]);
+      return data.rows[0].records;
+    } catch (error) {
+      throw Error(`Error getting monthly number of records by farm id: ${error.message}`);
+    }
+  },
+
+  getMonthlyNumOfRecordsByFarmIdAndSensor: async (
+    id: number,
+    year: number,
+    month: number,
+    sensor: string,
+  ) => {
+    try {
+      const query = `
+        SELECT COUNT(*) as records
+        FROM farm_data
+        WHERE farm_id = $1
+        AND EXTRACT(YEAR FROM time) = $2
+        AND EXTRACT(MONTH FROM time) = $3
+        AND sensor_type = $4
+      `;
+      const data = await db.query(query, [id, year, month, sensor]);
+      return data.rows[0].records;
+    } catch (error) {
+      throw Error(`Error getting monthly number of records by farm id and sensor: ${error.message}`);
+    }
+  },
 };
 
 export default DataService;

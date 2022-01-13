@@ -82,8 +82,10 @@ export const getSensorDataBetweenDates = async (
   end: Date,
   sensor: string,
 ) => {
+  const startString = start.toISOString();
+  const endString = start.toISOString();
   const response = await axios
-    .get(`${BASE_URL}/${id}/timespan/${start.toISOString()}&${end.toISOString()}/sensor/${sensor}`);
+    .get(`${BASE_URL}/${id}/timespan/${startString}&${endString}/sensor/${sensor}`);
   return response.data;
 };
 
@@ -99,5 +101,26 @@ export const getNumOfRecordsByFarmIdAndSensor = async (
   sensor: string,
 ) => {
   const response = await axios.get(`${BASE_URL}/${id}/sensor/${sensor}/total`);
+  return parseInt(response.data, 10);
+};
+
+export const getMonthlyNumOfRecordsByFarmId = async (
+  id: number,
+  year: number,
+  month: number,
+) => {
+  const response = await axios
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/total`);
+  return parseInt(response.data, 10);
+};
+
+export const getMonthlyNumOfRecordsByFarmIdAndSensor = async (
+  id: number,
+  year: number,
+  month: number,
+  sensor: string,
+) => {
+  const response = await axios
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/total`);
   return parseInt(response.data, 10);
 };

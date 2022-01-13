@@ -206,6 +206,39 @@ export const getNumOfRecordsByFarmIdAndSensor = async (
   );
 };
 
+export const getMonthlyNumOfRecordsByFarmId = async (
+  req: Request,
+  res: Response,
+) => {
+  const id = Number(req.params.id);
+  const year = Number(req.params.year);
+  const month = Number(req.params.month);
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getMonthlyNumOfRecordsByFarmId,
+    [id, year, month],
+  );
+};
+
+export const getMonthlyNumOfRecordsByFarmIdAndSensor = async (
+  req: Request,
+  res: Response,
+) => {
+  const id = Number(req.params.id);
+  const year = Number(req.params.year);
+  const month = Number(req.params.month);
+  const { sensor } = req.params;
+
+  await handleRequest(
+    req,
+    res,
+    DataService.getMonthlyNumOfRecordsByFarmIdAndSensor,
+    [id, year, month, sensor],
+  );
+};
+
 export const validate = (method: string) => {
   const validId = () => param('id', 'id must be an integer')
     .isInt();
@@ -284,6 +317,19 @@ export const validate = (method: string) => {
     case 'getNumOfRecordsByFarmIdAndSensor':
       return [
         validId(),
+        validSensor(),
+      ];
+    case 'getMonthlyNumOfRecordsByFarmId':
+      return [
+        validId(),
+        validYear(),
+        validMonth(),
+      ];
+    case 'getMonthlyNumOfRecordsByFarmIdAndSensor':
+      return [
+        validId(),
+        validYear(),
+        validMonth(),
         validSensor(),
       ];
     default: return [];

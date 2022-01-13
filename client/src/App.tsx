@@ -8,7 +8,11 @@ import { FarmData } from './types/types';
 import DataTable from './components/DataTable/DataTable';
 import {
   getDataByFarmId,
-  getDataByFarmIdAndSensor, getMonthlyData, getMonthlySensorData,
+  getDataByFarmIdAndSensor,
+  getMonthlyData,
+  getMonthlyNumOfRecordsByFarmId,
+  getMonthlyNumOfRecordsByFarmIdAndSensor,
+  getMonthlySensorData,
   getNumOfRecordsByFarmId,
   getNumOfRecordsByFarmIdAndSensor,
 } from './services/DataService';
@@ -42,13 +46,20 @@ const App = () => {
 
   useEffect(() => {
     const update = async () => {
-      const records = sensor !== 'any'
-        ? await getNumOfRecordsByFarmIdAndSensor(farmId, sensor)
-        : await getNumOfRecordsByFarmId((farmId));
-      setPages(Math.ceil(records / 15));
+      if (!byMonth) {
+        const records = sensor !== 'any'
+          ? await getNumOfRecordsByFarmIdAndSensor(farmId, sensor)
+          : await getNumOfRecordsByFarmId(farmId);
+        setPages(Math.ceil(records / 15));
+      } else {
+        const records = sensor !== 'any'
+          ? await getMonthlyNumOfRecordsByFarmIdAndSensor(farmId, year, month, sensor)
+          : await getMonthlyNumOfRecordsByFarmId(farmId, year, month);
+        setPages(Math.ceil(records / 15));
+      }
       await handleSearch(page);
     };
-    update();
+    update().catch(() => setData([]));
   }, [sensor, farmId, year, month, page, byMonth]);
 
   const handleFarmChange = (e: SelectChangeEvent<number>) => {

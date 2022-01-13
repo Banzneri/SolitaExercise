@@ -5,7 +5,7 @@ import {
   TableHead,
   TableBody,
   TableRow,
-  TableCell,
+  TableCell, Typography,
 } from '@mui/material';
 import { v4 as uuid } from 'uuid';
 import { FarmData } from '../../types/types';
@@ -29,22 +29,27 @@ const DataTable: FC<DataTableProps> = ({
   pages,
   handlePageChange,
   page,
-}) => (
-  <TableContainer>
-    <Table aria-label="simple table" size="small">
-      <TableHead>
-        <TableRow sx={headerStyles}>
-          <TableCell>Time</TableCell>
-          <TableCell align="right">Sensor</TableCell>
-          <TableCell align="right">Value</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {data.map((e) => <DataRow key={uuid()} data={e} />)}
-      </TableBody>
-    </Table>
-    {data && <PaginationBar pages={pages} handlePageChange={handlePageChange} page={page} />}
-  </TableContainer>
-);
+}) => {
+  if (!Array.isArray(data)) {
+    return <Typography variant="body1">No data found</Typography>;
+  }
+  return (
+    <TableContainer>
+      <Table aria-label="simple table" size="small">
+        <TableHead>
+          <TableRow sx={headerStyles}>
+            <TableCell>Time</TableCell>
+            <TableCell align="right">Sensor</TableCell>
+            <TableCell align="right">Value</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((e) => <DataRow key={uuid()} data={e} />)}
+        </TableBody>
+      </Table>
+      {data && <PaginationBar pages={pages} handlePageChange={handlePageChange} page={page} />}
+    </TableContainer>
+  );
+};
 
 export default DataTable;

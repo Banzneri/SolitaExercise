@@ -23,5 +23,15 @@ monthRouter.get(
   controller.validate('getMonthlyMinMax'),
   controller.getMonthlyMinMax,
 );
+monthRouter.get(
+  '/total',
+  controller.validate('getMonthlyNumOfRecordsByFarmId'),
+  controller.getMonthlyNumOfRecordsByFarmId,
+);
+monthRouter.get(
+  '/sensor/:sensor/total',
+  controller.validate('getMonthlyNumOfRecordsByFarmIdAndSensor'),
+  controller.getMonthlyNumOfRecordsByFarmIdAndSensor,
+);
 
 export default monthRouter;
