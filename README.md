@@ -11,6 +11,7 @@ https://github.com/solita/dev-academy-2022-exercise
 
 - Pull or download project from GitLab
 - Create and save .env file in the /server folder with the following content.
+
     ```
     DB_DATABASE=farm_database
     DB_HOST=localhost
