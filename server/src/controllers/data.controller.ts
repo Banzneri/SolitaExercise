@@ -117,7 +117,7 @@ export const getAllTimeMinMax = async (
   res: Response,
 ) => {
   const id = Number(req.params.id);
-  const { sensor } = req.params;
+  const { sensor } = req.query;
 
   await handleRequest(
     req,
@@ -134,7 +134,7 @@ export const getMonthlyMinMax = async (
   const id = Number(req.params.id);
   const year = Number(req.params.year);
   const month = Number(req.params.month);
-  const { sensor } = req.params;
+  const { sensor } = req.query;
 
   await handleRequest(
     req,
