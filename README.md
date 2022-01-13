@@ -22,4 +22,5 @@ https://github.com/solita/dev-academy-2022-exercise
 - Make sure your postgresql service is running
 - Navigate to /server folder and run `npm run createDb`. This creates the database and populates it with initial data
 - In /server folder, run `npm run dev`
-- in /client folder, run `npm start`
+- In /client folder, run `npm start`
+- The app should be running at http://localhost:3000
