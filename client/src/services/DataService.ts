@@ -2,14 +2,9 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3001/data/farm';
 
-export const getDataByFarmId = async (id: number, page?: number) => {
-  const response = await axios.get(`${BASE_URL}/${id}/?page=${page || 1}`);
-  return response.data;
-};
-
-export const getDataByFarmIdAndSensor = async (id: number, sensor: string, page?: number) => {
+export const getDataByFarmId = async (id: number, page?: number, sensor?: string) => {
   const response = await axios
-    .get(`${BASE_URL}/${id}/sensor/${sensor}/?page=${page || 1}`);
+    .get(`${BASE_URL}/${id}`, { params: { page, sensor } });
   return response.data;
 };
 
@@ -18,21 +13,10 @@ export const getMonthlyData = async (
   year: number,
   month: number,
   page?: number,
+  sensor?: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/${id}/month/${year}&${month}/?page=${page || 1}`);
-  return response.data;
-};
-
-export const getMonthlySensorData = async (
-  id: number,
-  year: number,
-  month: number,
-  sensor: string,
-  page?: number,
-) => {
-  const response = await axios
-    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/?page=${page || 1}`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}`, { params: { page, sensor } });
   return response.data;
 };
 
@@ -41,7 +25,7 @@ export const getAllTimeAverage = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/${id}/sensor/${sensor}/average`);
+    .get(`${BASE_URL}/${id}/average`, { params: { sensor } });
   return response.data;
 };
 
@@ -52,7 +36,7 @@ export const getMonthlyAverage = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/average`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/average`, { params: { sensor } });
   return response.data;
 };
 
@@ -61,7 +45,7 @@ export const getAllTimeMinMax = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/${id}/sensor/${sensor}/min-max`);
+    .get(`${BASE_URL}/${id}/min-max`, { params: { sensor } });
   return response.data;
 };
 
@@ -72,35 +56,29 @@ export const getMonthlyMinMax = async (
   sensor: string,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/min-max`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/min-max`, { params: { sensor } });
   return response.data;
 };
 
 export const getSensorDataBetweenDates = async (
   id: number,
-  start: Date,
-  end: Date,
+  startDate: Date,
+  endDate: Date,
   sensor: string,
 ) => {
-  const startString = start.toISOString();
-  const endString = start.toISOString();
+  const start = startDate.toISOString();
+  const end = endDate.toISOString();
   const response = await axios
-    .get(`${BASE_URL}/${id}/timespan/${startString}&${endString}/sensor/${sensor}`);
+    .get(`${BASE_URL}/${id}/timespan/${start}&${end}`, { params: { sensor } });
   return response.data;
 };
 
 export const getNumOfRecordsByFarmId = async (
   id: number,
+  sensor?: string,
 ) => {
-  const response = await axios.get(`${BASE_URL}/${id}/total`);
-  return parseInt(response.data, 10);
-};
-
-export const getNumOfRecordsByFarmIdAndSensor = async (
-  id: number,
-  sensor: string,
-) => {
-  const response = await axios.get(`${BASE_URL}/${id}/sensor/${sensor}/total`);
+  console.log(sensor);
+  const response = await axios.get(`${BASE_URL}/${id}/total`, { params: { sensor } });
   return parseInt(response.data, 10);
 };
 
@@ -108,19 +86,10 @@ export const getMonthlyNumOfRecordsByFarmId = async (
   id: number,
   year: number,
   month: number,
+  sensor?: string,
 ) => {
+  console.log(sensor);
   const response = await axios
-    .get(`${BASE_URL}/${id}/month/${year}&${month}/total`);
-  return parseInt(response.data, 10);
-};
-
-export const getMonthlyNumOfRecordsByFarmIdAndSensor = async (
-  id: number,
-  year: number,
-  month: number,
-  sensor: string,
-) => {
-  const response = await axios
-    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/total`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/total`, { params: { sensor } });
   return parseInt(response.data, 10);
 };

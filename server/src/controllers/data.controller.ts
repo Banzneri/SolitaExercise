@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { param, validationResult } from 'express-validator';
+import { param, query, validationResult } from 'express-validator';
 import { respondError, respondResults } from '../lib/utils';
 import DataService from '../services/data.service';
 
@@ -41,43 +41,18 @@ export const getDataByFarmId = async (
   res: Response,
 ) => {
   const id = Number(req.params.id);
+  const { sensor } = req.query;
+
+  const serviceFunction = sensor
+    ? DataService.getDataByFarmIdAndSensor
+    : DataService.getDataByFarmId;
+  const params = sensor ? [id, sensor] : [id];
 
   await handleRequest(
     req,
     res,
-    DataService.getDataByFarmId,
-    [id],
-  );
-};
-
-export const getDataByFarmIdAndSensor = async (
-  req: Request,
-  res: Response,
-) => {
-  const id = Number(req.params.id);
-  const { sensor } = req.params;
-
-  await handleRequest(
-    req,
-    res,
-    DataService.getDataByFarmIdAndSensor,
-    [id, sensor],
-  );
-};
-
-export const getAllMonthlyData = async (
-  req: Request,
-  res: Response,
-) => {
-  const id = Number(req.params.id);
-  const year = Number(req.params.year);
-  const month = Number(req.params.month);
-
-  await handleRequest(
-    req,
-    res,
-    DataService.getAllMonthlyData,
-    [id, year, month],
+    serviceFunction,
+    params,
   );
 };
 
@@ -88,13 +63,20 @@ export const getMonthlyData = async (
   const id = Number(req.params.id);
   const year = Number(req.params.year);
   const month = Number(req.params.month);
-  const { sensor } = req.params;
+  const { sensor } = req.query;
+
+  const serviceFunction = sensor
+    ? DataService.getMonthlyData
+    : DataService.getAllMonthlyData;
+  const params = sensor
+    ? [id, year, month, sensor]
+    : [id, year, month];
 
   await handleRequest(
     req,
     res,
-    DataService.getMonthlyData,
-    [id, year, month, sensor],
+    serviceFunction,
+    params,
   );
 };
 
@@ -103,7 +85,7 @@ export const getAllTimeAverage = async (
   res: Response,
 ) => {
   const id = Number(req.params.id);
-  const { sensor } = req.params;
+  const { sensor } = req.query;
 
   await handleRequest(
     req,
@@ -120,7 +102,7 @@ export const getMonthlyAverage = async (
   const id = Number(req.params.id);
   const year = Number(req.params.year);
   const month = Number(req.params.month);
-  const { sensor } = req.params;
+  const { sensor } = req.query;
 
   await handleRequest(
     req,
@@ -167,7 +149,8 @@ export const getSensorDataBetweenDates = async (
   res: Response,
 ) => {
   const id = Number(req.params.id);
-  const { startDate, endDate, sensor } = req.params;
+  const { startDate, endDate } = req.params;
+  const { sensor } = req.query;
 
   await handleRequest(
     req,
@@ -177,65 +160,47 @@ export const getSensorDataBetweenDates = async (
   );
 };
 
-export const getNumOfRecordsByFarmId = async (
+export const getNumOfRecords = async (
   req: Request,
   res: Response,
 ) => {
   const id = Number(req.params.id);
+  const { sensor } = req.query;
+
+  const serviceFunction = sensor
+    ? DataService.getNumOfRecordsByFarmIdAndSensor
+    : DataService.getNumOfRecordsByFarmId;
+  const params = sensor ? [id, sensor] : [id];
 
   await handleRequest(
     req,
     res,
-    DataService.getNumOfRecordsByFarmId,
-    [id],
+    serviceFunction,
+    params,
   );
 };
 
-export const getNumOfRecordsByFarmIdAndSensor = async (
-  req: Request,
-  res: Response,
-) => {
-  const id = Number(req.params.id);
-  const { sensor } = req.params;
-
-  await handleRequest(
-    req,
-    res,
-    DataService.getNumOfRecordsByFarmIdAndSensor,
-    [id, sensor],
-  );
-};
-
-export const getMonthlyNumOfRecordsByFarmId = async (
+export const getMonthlyNumOfRecords = async (
   req: Request,
   res: Response,
 ) => {
   const id = Number(req.params.id);
   const year = Number(req.params.year);
   const month = Number(req.params.month);
+  const { sensor } = req.query;
+
+  const serviceFunction = sensor
+    ? DataService.getMonthlyNumOfRecordsByFarmIdAndSensor
+    : DataService.getMonthlyNumOfRecordsByFarmId;
+  const params = sensor
+    ? [id, year, month, sensor]
+    : [id, year, month];
 
   await handleRequest(
     req,
     res,
-    DataService.getMonthlyNumOfRecordsByFarmId,
-    [id, year, month],
-  );
-};
-
-export const getMonthlyNumOfRecordsByFarmIdAndSensor = async (
-  req: Request,
-  res: Response,
-) => {
-  const id = Number(req.params.id);
-  const year = Number(req.params.year);
-  const month = Number(req.params.month);
-  const { sensor } = req.params;
-
-  await handleRequest(
-    req,
-    res,
-    DataService.getMonthlyNumOfRecordsByFarmIdAndSensor,
-    [id, year, month, sensor],
+    serviceFunction,
+    params,
   );
 };
 
@@ -243,7 +208,7 @@ export const validate = (method: string) => {
   const validId = () => param('id', 'id must be an integer')
     .isInt();
 
-  const validSensor = () => param('sensor', 'wrong sensor type')
+  const validSensor = () => query('sensor', 'wrong sensor type')
     .toLowerCase()
     .isIn(['ph', 'rainfall', 'temperature']);
 
@@ -261,23 +226,11 @@ export const validate = (method: string) => {
       return [
         validId(),
       ];
-    case 'getDataByFarmIdAndSensor':
-      return [
-        validId(),
-        validSensor(),
-      ];
-    case 'getAllMonthlyData':
-      return [
-        validId(),
-        validYear(),
-        validMonth(),
-      ];
     case 'getMonthlyData':
       return [
         validId(),
         validYear(),
         validMonth(),
-        validSensor(),
       ];
     case 'getAllTimeAverage':
       return [
@@ -310,27 +263,15 @@ export const validate = (method: string) => {
         validDate('endDate'),
         validSensor(),
       ];
-    case 'getNumOfRecordsByFarmId':
+    case 'getNumOfRecords':
       return [
         validId(),
       ];
-    case 'getNumOfRecordsByFarmIdAndSensor':
-      return [
-        validId(),
-        validSensor(),
-      ];
-    case 'getMonthlyNumOfRecordsByFarmId':
+    case 'getMonthlyNumOfRecords':
       return [
         validId(),
         validYear(),
         validMonth(),
-      ];
-    case 'getMonthlyNumOfRecordsByFarmIdAndSensor':
-      return [
-        validId(),
-        validYear(),
-        validMonth(),
-        validSensor(),
       ];
     default: return [];
   }

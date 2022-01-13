@@ -9,35 +9,24 @@ dataRouter.get(
   controller.getDataByFarmId,
 );
 dataRouter.get(
-  '/sensor/:sensor',
-  controller.validate('getDataByFarmIdAndSensor'),
-  controller.getDataByFarmIdAndSensor,
-);
-dataRouter.get(
-  '/sensor/:sensor/average',
+  '/average',
   controller.validate('getAllTimeAverage'),
   controller.getAllTimeAverage,
 );
 dataRouter.get(
-  '/sensor/:sensor/min-max',
+  '/min-max',
   controller.validate('getAllTimeMinMax'),
   controller.getAllTimeMinMax,
 );
 dataRouter.get(
-  '/timespan/:startDate&:endDate/sensor/:sensor',
+  '/timespan/:startDate&:endDate',
   controller.validate('getSensorDataBetweenDates'),
   controller.getSensorDataBetweenDates,
 );
 dataRouter.get(
   '/total',
-  controller.validate('getNumOfRecordsByFarmId'),
-  controller.getNumOfRecordsByFarmId,
+  controller.validate('getNumOfRecords'),
+  controller.getNumOfRecords,
 );
-dataRouter.get(
-  '/sensor/:sensor/total',
-  controller.validate('getNumOfRecordsByFarmIdAndSensor'),
-  controller.getNumOfRecordsByFarmIdAndSensor,
-);
-
 
 export default dataRouter;

@@ -8,19 +8,15 @@ import { FarmData } from './types/types';
 import DataTable from './components/DataTable/DataTable';
 import {
   getDataByFarmId,
-  getDataByFarmIdAndSensor,
   getMonthlyData,
   getMonthlyNumOfRecordsByFarmId,
-  getMonthlyNumOfRecordsByFarmIdAndSensor,
-  getMonthlySensorData,
   getNumOfRecordsByFarmId,
-  getNumOfRecordsByFarmIdAndSensor,
 } from './services/DataService';
 import FarmListContainer from './components/FarmListContainer/FarmListContainer';
 import SensorSelection from './components/SensorSelection/SensorSelection';
 import MonthSelection from './components/MonthSelection/MonthSelection';
 
-const perPage = 20;
+const perPage = 15;
 
 const App = () => {
   const [data, setData] = useState<FarmData[]>([]);
@@ -33,32 +29,20 @@ const App = () => {
   const [month, setMonth] = useState<number>(1);
 
   const handleSearch = async (page: number) => {
-    if (!byMonth) {
-      const data = sensor !== 'any'
-        ? await getDataByFarmIdAndSensor(farmId, sensor, page)
-        : await getDataByFarmId(farmId, page);
-      setData(data);
-    } else {
-      const data = sensor !== 'any'
-        ? await getMonthlySensorData(farmId, year, month, sensor, page)
-        : await getMonthlyData(farmId, year, month, page);
-      setData(data);
-    }
+    const sensorType = sensor === 'any' ? undefined : sensor;
+    const data = byMonth
+      ? await getMonthlyData(farmId, year, month, page, sensorType)
+      : await getDataByFarmId(farmId, page, sensorType);
+    setData(data);
   };
 
   useEffect(() => {
     const update = async () => {
-      if (!byMonth) {
-        const records = sensor !== 'any'
-          ? await getNumOfRecordsByFarmIdAndSensor(farmId, sensor)
-          : await getNumOfRecordsByFarmId(farmId);
-        setPages(Math.ceil(records / perPage));
-      } else {
-        const records = sensor !== 'any'
-          ? await getMonthlyNumOfRecordsByFarmIdAndSensor(farmId, year, month, sensor)
-          : await getMonthlyNumOfRecordsByFarmId(farmId, year, month);
-        setPages(Math.ceil(records / perPage));
-      }
+      const sensorType = sensor === 'any' ? undefined : sensor;
+      const records = byMonth
+        ? await getMonthlyNumOfRecordsByFarmId(farmId, year, month, sensorType)
+        : await getNumOfRecordsByFarmId(farmId, sensorType);
+      setPages(Math.ceil(records / perPage));
       await handleSearch(page);
     };
     update().catch(() => setData([]));
