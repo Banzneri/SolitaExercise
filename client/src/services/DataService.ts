@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://172.18.195.65:3001/data/farm';
+const BASE_URL = 'http://localhost:3001/data/farm';
 
 export const getDataByFarmId = async (id: number, page?: number) => {
   const response = await axios.get(`${BASE_URL}/${id}/?page=${page || 1}`);

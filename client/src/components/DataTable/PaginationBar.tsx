@@ -1,5 +1,5 @@
 import { ChangeEvent, FC } from 'react';
-import { Container, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 
 interface PaginationBarProps {
   pages: number,
