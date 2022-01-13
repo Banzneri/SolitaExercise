@@ -20,6 +20,8 @@ import FarmListContainer from './components/FarmListContainer/FarmListContainer'
 import SensorSelection from './components/SensorSelection/SensorSelection';
 import MonthSelection from './components/MonthSelection/MonthSelection';
 
+const perPage = 20;
+
 const App = () => {
   const [data, setData] = useState<FarmData[]>([]);
   const [farmId, setFarmId] = useState<number>(1);
@@ -50,12 +52,12 @@ const App = () => {
         const records = sensor !== 'any'
           ? await getNumOfRecordsByFarmIdAndSensor(farmId, sensor)
           : await getNumOfRecordsByFarmId(farmId);
-        setPages(Math.ceil(records / 15));
+        setPages(Math.ceil(records / perPage));
       } else {
         const records = sensor !== 'any'
           ? await getMonthlyNumOfRecordsByFarmIdAndSensor(farmId, year, month, sensor)
           : await getMonthlyNumOfRecordsByFarmId(farmId, year, month);
-        setPages(Math.ceil(records / 15));
+        setPages(Math.ceil(records / perPage));
       }
       await handleSearch(page);
     };
@@ -96,20 +98,18 @@ const App = () => {
   };
 
   return (
-    <Container className="App">
+    <Container className="App" sx={{ marginBottom: 2 }}>
       <Typography sx={{ my: '3rem' }} variant="h2">Farm data viewer</Typography>
       <FarmListContainer handleFarmChange={handleFarmChange} />
       <Grid container>
         <SensorSelection handleSensorChange={handleSensorChange} />
         <FormControlLabel control={<Switch onChange={handleByMonth} />} label="By month" />
       </Grid>
-      {byMonth
-        && (
-          <MonthSelection
-            handleYearChange={handleYearChange}
-            handleMonthChange={handleMonthChange}
-          />
-          )}
+      <MonthSelection
+        handleYearChange={handleYearChange}
+        handleMonthChange={handleMonthChange}
+        show={byMonth}
+      />
       <DataTable data={data} pages={pages} handlePageChange={handlePageChange} page={page} />
     </Container>
   );
