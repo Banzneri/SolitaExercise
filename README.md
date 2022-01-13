@@ -49,4 +49,3 @@ https://github.com/solita/dev-academy-2022-exercise
 | Farm     | /farms             | GET    | Get all farms    |
 | Farm     | /farms/id/{id}     | GET    | Get farm by id   |
 | Farm     | /farms/name/{name} | GET    | Get farm by name |
-
