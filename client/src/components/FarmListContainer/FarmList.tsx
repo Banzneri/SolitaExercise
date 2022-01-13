@@ -10,7 +10,7 @@ import { Farm } from '../../types/types';
 
 interface FarmListProps {
   farms: Farm[],
-  handleFarmChange(e: SelectChangeEvent<unknown>): void
+  handleFarmChange(e: SelectChangeEvent<number>): void
 }
 
 const FarmList: FC<FarmListProps> = ({ farms, handleFarmChange }) => (

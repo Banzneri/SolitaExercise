@@ -4,7 +4,7 @@ import { getAllFarms } from '../../services/FarmService';
 import FarmList from './FarmList';
 
 interface FarmListContainerProps {
-  handleFarmChange(e: SelectChangeEvent<unknown>): void
+  handleFarmChange(e: SelectChangeEvent<number>): void
 }
 
 const FarmListContainer: FC<FarmListContainerProps> = ({

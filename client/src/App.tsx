@@ -1,19 +1,20 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import {
-  Container,
-  SelectChangeEvent,
+  Container, FormControlLabel, Grid,
+  SelectChangeEvent, Switch,
   Typography,
 } from '@mui/material';
 import { FarmData } from './types/types';
 import DataTable from './components/DataTable/DataTable';
 import {
   getDataByFarmId,
-  getDataByFarmIdAndSensor,
+  getDataByFarmIdAndSensor, getMonthlyData, getMonthlySensorData,
   getNumOfRecordsByFarmId,
   getNumOfRecordsByFarmIdAndSensor,
 } from './services/DataService';
 import FarmListContainer from './components/FarmListContainer/FarmListContainer';
 import SensorSelection from './components/SensorSelection/SensorSelection';
+import MonthSelection from './components/MonthSelection/MonthSelection';
 
 const App = () => {
   const [data, setData] = useState<FarmData[]>([]);
@@ -21,12 +22,22 @@ const App = () => {
   const [sensor, setSensor] = useState<string>('any');
   const [pages, setPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
+  const [byMonth, setByMonth] = useState<boolean>(false);
+  const [year, setYear] = useState<number>(2019);
+  const [month, setMonth] = useState<number>(1);
 
   const handleSearch = async (page: number) => {
-    const data = sensor !== 'any'
-      ? await getDataByFarmIdAndSensor(farmId, sensor, page)
-      : await getDataByFarmId(farmId, page);
-    setData(data);
+    if (!byMonth) {
+      const data = sensor !== 'any'
+        ? await getDataByFarmIdAndSensor(farmId, sensor, page)
+        : await getDataByFarmId(farmId, page);
+      setData(data);
+    } else {
+      const data = sensor !== 'any'
+        ? await getMonthlySensorData(farmId, year, month, sensor, page)
+        : await getMonthlyData(farmId, year, month, page);
+      setData(data);
+    }
   };
 
   useEffect(() => {
@@ -38,28 +49,56 @@ const App = () => {
       await handleSearch(page);
     };
     update();
-  }, [sensor, farmId, page]);
+  }, [sensor, farmId, year, month, page, byMonth]);
 
-  const handleFarmChange = async (e: SelectChangeEvent) => {
+  const handleFarmChange = (e: SelectChangeEvent<number>) => {
     const id = e.target.value;
     setPage(1);
     setFarmId(Number(id));
   };
 
-  const handleSensorChange = async (e: ChangeEvent, val: string) => {
+  const handleSensorChange = (e: ChangeEvent, val: string) => {
     setPage(1);
     setSensor(val);
   };
 
-  const handlePageChange = async (e: ChangeEvent, page: number) => {
+  const handlePageChange = (e: ChangeEvent, page: number) => {
     setPage(page);
+  };
+
+  const handleYearChange = (e: SelectChangeEvent<number>) => {
+    const year = e.target.value;
+    setPage(1);
+    setYear(Number(year));
+  };
+
+  const handleMonthChange = (e: SelectChangeEvent<number>) => {
+    const month = e.target.value;
+    setPage(1);
+    setMonth(Number(month));
+  };
+
+  const handleByMonth = (e: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.target;
+    setPage(1);
+    setByMonth(checked);
   };
 
   return (
     <Container className="App">
       <Typography sx={{ my: '3rem' }} variant="h2">Farm data viewer</Typography>
       <FarmListContainer handleFarmChange={handleFarmChange} />
-      <SensorSelection handleSensorChange={handleSensorChange} />
+      <Grid container>
+        <SensorSelection handleSensorChange={handleSensorChange} />
+        <FormControlLabel control={<Switch onChange={handleByMonth} />} label="By month" />
+      </Grid>
+      {byMonth
+        && (
+          <MonthSelection
+            handleYearChange={handleYearChange}
+            handleMonthChange={handleMonthChange}
+          />
+          )}
       <DataTable data={data} pages={pages} handlePageChange={handlePageChange} page={page} />
     </Container>
   );

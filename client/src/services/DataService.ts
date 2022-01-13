@@ -17,8 +17,10 @@ export const getMonthlyData = async (
   id: number,
   year: number,
   month: number,
+  page?: number,
 ) => {
-  const response = await axios.get(`${BASE_URL}/${id}/month/${year}&${month}`);
+  const response = await axios
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/?page=${page || 1}`);
   return response.data;
 };
 
@@ -27,9 +29,10 @@ export const getMonthlySensorData = async (
   year: number,
   month: number,
   sensor: string,
+  page?: number,
 ) => {
   const response = await axios
-    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}`);
+    .get(`${BASE_URL}/${id}/month/${year}&${month}/sensor/${sensor}/?page=${page || 1}`);
   return response.data;
 };
 

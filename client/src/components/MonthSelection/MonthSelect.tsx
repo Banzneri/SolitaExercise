@@ -16,15 +16,16 @@ const MonthSelect: FC<MonthSelectProps> = ({
   handleMonthChange,
 }) => (
   <FormControl fullWidth>
-    <InputLabel>Farms</InputLabel>
+    <InputLabel>Month</InputLabel>
     <Select
-      labelId="farm-select"
-      id="farm-select"
+      labelId="month-select"
+      id="month-select"
       onChange={(e) => handleMonthChange(e)}
       defaultValue={1}
     >
-      <MenuItem value={0}>Any</MenuItem>
       {months.map((e) => <MenuItem key={e} value={e}>{e}</MenuItem>)}
     </Select>
   </FormControl>
 );
+
+export default MonthSelect;
