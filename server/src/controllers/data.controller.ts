@@ -221,16 +221,23 @@ export const validate = (method: string) => {
   const validDate = (date: string) => param(date, `invalid ${date}`)
     .isDate();
 
+  const optionalValidSensor = () => query('sensor', 'wrong sensor type')
+    .toLowerCase()
+    .optional({ nullable: true, checkFalsy: true })
+    .isIn(['ph', 'rainfall', 'temperature']);
+
   switch (method) {
     case 'getDataByFarmId':
       return [
         validId(),
+        optionalValidSensor(),
       ];
     case 'getMonthlyData':
       return [
         validId(),
         validYear(),
         validMonth(),
+        optionalValidSensor(),
       ];
     case 'getAllTimeAverage':
       return [
@@ -266,12 +273,14 @@ export const validate = (method: string) => {
     case 'getNumOfRecords':
       return [
         validId(),
+        optionalValidSensor(),
       ];
     case 'getMonthlyNumOfRecords':
       return [
         validId(),
         validYear(),
         validMonth(),
+        optionalValidSensor(),
       ];
     default: return [];
   }
