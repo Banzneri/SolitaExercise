@@ -31,17 +31,23 @@ https://github.com/solita/dev-academy-2022-exercise
 
 
 ### Data
+All data endpoints have optional page and sensor query parameters. If sensor is omitted, data from all sensors is returned.
+if page is omitted, page defaults to 1.
 
-| Resource | Endpoint                                                     | Method | Description                                     |
-|----------|--------------------------------------------------------------|--------|-------------------------------------------------|
-| Data     | /data/farm/{id}                                              | GET    | Get all data from a farm by id                  |
-| Data     | /data/farm/{id}/sensor/{sensor}                              | GET    | Get all data from a farm by id and sensor type  |
-| Data     | /data/farm/{id}/sensor/{sensor}/average                      | GET    | Get all time average by farm id and sensor type |
-| Data     | /data/farm/{id}/sensor/{sensor}/min-max                      | GET    | Get all time min-max by farm id and sensor type |
-| Data     | /data/farm/{id}/month/{year}&{month}/                        | GET    | Get all monthly data by farm id                 |
-| Data     | /data/farm/{id}/month/{year}&{month}/sensor/{sensor}         | GET    | Get monthly data by farm id and sensor type     |
-| Data     | /data/farm/{id}/month/{year}&{month}/sensor/{sensor}/average | GET    | Get monthly average by farm id and sensor type  |
-| Data     | /data/farm/{id}/month/{year}&{month}/sensor/{sensor}/min-max | GET    | Get monthly min-max by farm id and sensor type  |
+| Resource | Endpoint                             | Method | Description                 |
+|----------|--------------------------------------|--------|-----------------------------|
+| Data     | /data/farm/{id}                      | GET    | Get data by farm id         |
+| Data     | /data/farm/{id}/month/{year}&{month} | GET    | Get monthly data by farm id |
+
+### Aggregate data
+All aggregate data endpoints must have a sensor type as a query parameter, e.g. /average?sensor=ph
+
+| Resource       | Endpoint                                     | Method | Description                     |
+|----------------|----------------------------------------------|--------|---------------------------------|
+| Aggregate data | /data/farm/{id}/average                      | GET    | Get all time average by farm id |
+| Aggregate data | /data/farm/{id}/min-max                      | GET    | Get all time min-max by farm id |
+| Aggregate data | /data/farm/{id}/month/{year}&{month}/average | GET    | Get monthly average by farm id  |
+| Aggregate data | /data/farm/{id}/month/{year}&{month}/min-max | GET    | Get monthly min-max by farm id  |
 
 ### Farms
 
