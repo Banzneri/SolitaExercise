@@ -28,7 +28,6 @@ const DataService = {
         WHERE farm_id = $1
         ${page ? 'LIMIT $2 OFFSET $3' : ''}
       `;
-      console.log(page);
       const params = page ? [id, perPage, getOffset(page)] : [id];
       const data = await db.query(query, params);
       return data.rows;

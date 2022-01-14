@@ -31,7 +31,7 @@ const DataTable: FC<DataTableProps> = ({
   page,
 }) => {
   if (!Array.isArray(data)) {
-    return <Typography variant="body1">No data found</Typography>;
+    return <Typography sx={{ marginTop: 2 }} variant="body1">No data found</Typography>;
   }
   return (
     <TableContainer>

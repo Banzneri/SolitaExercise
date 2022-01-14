@@ -109,18 +109,21 @@ const App = () => {
 
   return (
     <Container className="App" sx={{ marginBottom: 2 }}>
-      <Typography sx={{ my: '1.5rem' }} variant="h3">Farm data viewer</Typography>
+      <Typography sx={{ my: '1.5rem' }} variant="h3">Data master 4000</Typography>
       <FarmListContainer handleFarmChange={handleFarmChange} />
       <Grid container>
         <SensorSelection handleSensorChange={handleSensorChange} />
         <FormControlLabel control={<Switch onChange={handleByMonth} />} label="By month" />
-        <AggregateData average={average} min={min} max={max} show={sensor !== 'any'} />
+        {sensor !== 'any' && <AggregateData average={average} min={min} max={max} />}
       </Grid>
-      <MonthSelection
-        handleYearChange={handleYearChange}
-        handleMonthChange={handleMonthChange}
-        show={byMonth}
-      />
+      {byMonth && (
+        <MonthSelection
+          handleYearChange={handleYearChange}
+          handleMonthChange={handleMonthChange}
+          year={year}
+          month={month}
+        />
+      )}
       <DataTable data={data} pages={pages} handlePageChange={handlePageChange} page={page} />
     </Container>
   );
