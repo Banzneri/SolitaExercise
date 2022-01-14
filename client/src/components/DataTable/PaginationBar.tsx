@@ -20,6 +20,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
     size="large"
     shape="rounded"
     page={page}
+    siblingCount={3}
   />
 );
 
