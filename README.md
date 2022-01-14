@@ -32,7 +32,7 @@ https://github.com/solita/dev-academy-2022-exercise
 
 ### Data
 All data endpoints have optional `page` and `sensor` query parameters. If sensor is omitted, data from all sensors is returned.
-If page is omitted, page defaults to 1.
+If page is omitted, all data is returned.
 
 | Resource | Endpoint                             | Method | Description                 |
 |----------|--------------------------------------|--------|-----------------------------|
