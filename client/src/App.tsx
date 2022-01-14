@@ -83,7 +83,7 @@ const App = () => {
 
   return (
     <Container className="App" sx={{ marginBottom: 2 }}>
-      <Typography sx={{ my: '3rem' }} variant="h2">Farm data viewer</Typography>
+      <Typography sx={{ my: '1.5rem' }} variant="h3">Farm data viewer</Typography>
       <FarmListContainer handleFarmChange={handleFarmChange} />
       <Grid container>
         <SensorSelection handleSensorChange={handleSensorChange} />

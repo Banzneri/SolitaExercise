@@ -6,28 +6,31 @@ const getOffset = (page: number) => (page - 1) * perPage;
 
 // TODO: add pagination
 const DataService = {
-  getAllData: async (page: number) => {
+  getAllData: async (page?: number) => {
     try {
       const query = `
         SELECT * FROM farm_data
-        LIMIT $1 OFFSET $2
+        ${page ? 'LIMIT $1 OFFSET $2' : ''}
       `;
-      const data = await db.query(query, [perPage, getOffset(page)]);
+      const params = page ? [perPage, getOffset((page))] : [];
+      const data = await db.query(query, params);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting all data: ${error.message}`);
     }
   },
 
-  getDataByFarmId: async (id: number, page: number) => {
+  getDataByFarmId: async (id: number, page?: number) => {
     try {
       const query = `
         SELECT id, farm_id as "farmId", time as "dateTime", sensor_type as "sensorType", value
         FROM farm_data
         WHERE farm_id = $1
-        LIMIT $2 OFFSET $3
+        ${page ? 'LIMIT $2 OFFSET $3' : ''}
       `;
-      const data = await db.query(query, [id, perPage, getOffset(page)]);
+      console.log(page);
+      const params = page ? [id, perPage, getOffset(page)] : [id];
+      const data = await db.query(query, params);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting data by farm id: ${error.message}`);
@@ -37,7 +40,7 @@ const DataService = {
   getDataByFarmIdAndSensor: async (
     id: number,
     sensor: string,
-    page: number,
+    page?: number,
   ) => {
     try {
       const query = `
@@ -45,9 +48,12 @@ const DataService = {
         FROM farm_data
         WHERE farm_id = $1
         AND sensor_type = $2
-        LIMIT $3 OFFSET $4
+        ${page ? 'LIMIT $3 OFFSET $4' : ''}
        `;
-      const data = await db.query(query, [id, sensor, perPage, getOffset(page)]);
+      const params = page
+        ? [id, sensor, perPage, getOffset(page)]
+        : [id, sensor, perPage];
+      const data = await db.query(query, params);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting sensor data: ${error.message}`);
@@ -58,7 +64,7 @@ const DataService = {
     id: number,
     year: number,
     month: number,
-    page: number,
+    page?: number,
   ) => {
     try {
       const query = `
@@ -67,9 +73,12 @@ const DataService = {
         WHERE farm_id = $1
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
-        LIMIT $4 OFFSET $5
+        ${page ? 'LIMIT $4 OFFSET $5' : ''}
       `;
-      const data = await db.query(query, [id, year, month, perPage, getOffset(page)]);
+      const params = page
+        ? [id, year, month, perPage, getOffset(page)]
+        : [id, year, month];
+      const data = await db.query(query, params);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting data by month: ${error.message}`);
@@ -81,7 +90,7 @@ const DataService = {
     year: number,
     month: number,
     sensor: string,
-    page: number,
+    page?: number,
   ) => {
     try {
       const query = `
@@ -91,12 +100,12 @@ const DataService = {
         AND EXTRACT(YEAR FROM time) = $2
         AND EXTRACT(MONTH FROM time) = $3
         AND sensor_type = $4
-        LIMIT $5 OFFSET $6
+        ${page ? 'LIMIT $5 OFFSET $6' : ''}
       `;
-      const data = await db.query(
-        query,
-        [id, year, month, sensor, perPage, getOffset(page)],
-      );
+      const params = page
+        ? [id, year, month, sensor, perPage, getOffset(page)]
+        : [id, year, month, sensor];
+      const data = await db.query(query, params);
       return data.rows;
     } catch (error) {
       throw Error(`Error getting monthly data by sensor: ${error.message}`);

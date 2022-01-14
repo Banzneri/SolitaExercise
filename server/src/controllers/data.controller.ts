@@ -14,9 +14,7 @@ const handleRequest = async (
     return respondError(res, 400, errors);
   }
   try {
-    const page = req.query.page
-      ? Number(req.query.page)
-      : 1;
+    const { page } = req.query;
     const results = await handle(...params, page);
     return respondResults(res, results);
   } catch (error) {
@@ -225,12 +223,16 @@ export const validate = (method: string) => {
     .toLowerCase()
     .optional({ nullable: true, checkFalsy: true })
     .isIn(['ph', 'rainfall', 'temperature']);
+  const optionalValidPage = () => query('page', 'invalid page query')
+    .optional({ nullable: true, checkFalsy: true })
+    .isInt();
 
   switch (method) {
     case 'getDataByFarmId':
       return [
         validId(),
         optionalValidSensor(),
+        optionalValidPage(),
       ];
     case 'getMonthlyData':
       return [
@@ -238,6 +240,7 @@ export const validate = (method: string) => {
         validYear(),
         validMonth(),
         optionalValidSensor(),
+        optionalValidPage(),
       ];
     case 'getAllTimeAverage':
       return [
