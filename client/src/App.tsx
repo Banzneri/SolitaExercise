@@ -7,14 +7,16 @@ import {
 import { FarmData } from './types/types';
 import DataTable from './components/DataTable/DataTable';
 import {
-  getDataByFarmId,
-  getMonthlyData,
+  getAllTimeAverage, getAllTimeMinMax,
+  getDataByFarmId, getMonthlyAverage,
+  getMonthlyData, getMonthlyMinMax,
   getMonthlyNumOfRecordsByFarmId,
   getNumOfRecordsByFarmId,
 } from './services/DataService';
 import FarmListContainer from './components/FarmListContainer/FarmListContainer';
 import SensorSelection from './components/SensorSelection/SensorSelection';
 import MonthSelection from './components/MonthSelection/MonthSelection';
+import AggregateData from './components/AggregateData/AggregateData';
 
 const perPage = 15;
 
@@ -27,9 +29,33 @@ const App = () => {
   const [byMonth, setByMonth] = useState<boolean>(false);
   const [year, setYear] = useState<number>(2019);
   const [month, setMonth] = useState<number>(1);
+  const [average, setAverage] = useState<number>(0);
+  const [min, setMin] = useState<number>(0);
+  const [max, setMax] = useState<number>(0);
 
   const handleSearch = async (page: number) => {
     const sensorType = sensor === 'any' ? undefined : sensor;
+    if (byMonth) {
+      const data = await getMonthlyData(farmId, year, month, page, sensorType);
+      setData(data);
+      if (sensorType) {
+        const avg = await getMonthlyAverage(farmId, year, month, sensorType);
+        const { min, max } = await getMonthlyMinMax(farmId, year, month, sensorType);
+        setAverage(avg);
+        setMin(min);
+        setMax(max);
+      }
+    } else {
+      const data = await getDataByFarmId(farmId, page, sensorType);
+      setData(data);
+      if (sensorType) {
+        const avg = await getAllTimeAverage(farmId, sensorType);
+        const { min, max } = await getAllTimeMinMax(farmId, sensorType);
+        setAverage(avg);
+        setMin(min);
+        setMax(max);
+      }
+    }
     const data = byMonth
       ? await getMonthlyData(farmId, year, month, page, sensorType)
       : await getDataByFarmId(farmId, page, sensorType);
@@ -88,6 +114,7 @@ const App = () => {
       <Grid container>
         <SensorSelection handleSensorChange={handleSensorChange} />
         <FormControlLabel control={<Switch onChange={handleByMonth} />} label="By month" />
+        {sensor !== 'any' && <AggregateData average={average} min={min} max={max} />}
       </Grid>
       <MonthSelection
         handleYearChange={handleYearChange}
