@@ -114,7 +114,7 @@ const App = () => {
       <Grid container>
         <SensorSelection handleSensorChange={handleSensorChange} />
         <FormControlLabel control={<Switch onChange={handleByMonth} />} label="By month" />
-        {sensor !== 'any' && <AggregateData average={average} min={min} max={max} />}
+        <AggregateData average={average} min={min} max={max} show={sensor !== 'any'} />
       </Grid>
       <MonthSelection
         handleYearChange={handleYearChange}
