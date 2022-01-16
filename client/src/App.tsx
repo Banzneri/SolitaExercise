@@ -7,16 +7,13 @@ import {
 import { FarmData } from './types/types';
 import DataTable from './components/DataTable/DataTable';
 import {
-  getAllTimeAverage, getAllTimeMinMax,
-  getDataByFarmId, getMonthlyAverage,
-  getMonthlyData, getMonthlyMinMax,
-  getMonthlyNumOfRecordsByFarmId,
-  getNumOfRecordsByFarmId,
+  getAverage, getMinMax, getData, getNumOfRecords,
 } from './services/DataService';
 import FarmListContainer from './components/FarmListContainer/FarmListContainer';
 import SensorSelection from './components/SensorSelection/SensorSelection';
 import MonthSelection from './components/MonthSelection/MonthSelection';
 import AggregateData from './components/AggregateData/AggregateData';
+import DataChart from './components/DataChart';
 
 const perPage = 15;
 
@@ -33,43 +30,26 @@ const App = () => {
   const [min, setMin] = useState<number>(0);
   const [max, setMax] = useState<number>(0);
 
-  const handleSearch = async (page: number) => {
+  const handleSearch = async () => {
     const sensorType = sensor === 'any' ? undefined : sensor;
-    if (byMonth) {
-      const data = await getMonthlyData(farmId, year, month, page, sensorType);
-      setData(data);
-      if (sensorType) {
-        const avg = await getMonthlyAverage(farmId, year, month, sensorType);
-        const { min, max } = await getMonthlyMinMax(farmId, year, month, sensorType);
-        setAverage(avg);
-        setMin(min);
-        setMax(max);
-      }
-    } else {
-      const data = await getDataByFarmId(farmId, page, sensorType);
-      setData(data);
-      if (sensorType) {
-        const avg = await getAllTimeAverage(farmId, sensorType);
-        const { min, max } = await getAllTimeMinMax(farmId, sensorType);
-        setAverage(avg);
-        setMin(min);
-        setMax(max);
-      }
-    }
-    const data = byMonth
-      ? await getMonthlyData(farmId, year, month, page, sensorType)
-      : await getDataByFarmId(farmId, page, sensorType);
+    const data = await getData(farmId, page, sensorType, byMonth, year, month);
     setData(data);
+
+    if (sensorType) {
+      const average = await getAverage(farmId, sensorType, byMonth, year, month);
+      const { min, max } = await getMinMax(farmId, sensorType, byMonth, year, month);
+      setAverage(average);
+      setMin(min);
+      setMax(max);
+    }
   };
 
   useEffect(() => {
     const update = async () => {
       const sensorType = sensor === 'any' ? undefined : sensor;
-      const records = byMonth
-        ? await getMonthlyNumOfRecordsByFarmId(farmId, year, month, sensorType)
-        : await getNumOfRecordsByFarmId(farmId, sensorType);
+      const records = await getNumOfRecords(farmId, sensorType, byMonth, year, month);
       setPages(Math.ceil(records / perPage));
-      await handleSearch(page);
+      await handleSearch();
     };
     update().catch(() => setData([]));
   }, [sensor, farmId, year, month, page, byMonth]);
@@ -101,10 +81,11 @@ const App = () => {
     setMonth(Number(month));
   };
 
-  const handleByMonth = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleByMonth = async (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
     setPage(1);
     setByMonth(checked);
+    await handleSearch();
   };
 
   return (
@@ -114,17 +95,17 @@ const App = () => {
       <Grid container>
         <SensorSelection handleSensorChange={handleSensorChange} />
         <FormControlLabel control={<Switch onChange={handleByMonth} />} label="By month" />
-        {sensor !== 'any' && <AggregateData average={average} min={min} max={max} />}
+        <AggregateData average={average} min={min} max={max} show={sensor !== 'any'} />
       </Grid>
-      {byMonth && (
-        <MonthSelection
-          handleYearChange={handleYearChange}
-          handleMonthChange={handleMonthChange}
-          year={year}
-          month={month}
-        />
-      )}
+      <MonthSelection
+        handleYearChange={handleYearChange}
+        handleMonthChange={handleMonthChange}
+        year={year}
+        month={month}
+        show={byMonth}
+      />
       <DataTable data={data} pages={pages} handlePageChange={handlePageChange} page={page} />
+      <DataChart farmId={farmId} month={month} year={year} byMonth={byMonth} sensor={sensor} />
     </Container>
   );
 };

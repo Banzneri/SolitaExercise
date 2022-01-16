@@ -1,6 +1,14 @@
 import { FC, useEffect, useState } from 'react';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import { Container, Typography } from '@mui/material';
 import { FarmData } from '../types/types';
-import { getDataByFarmId, getMonthlyData } from '../services/DataService';
+import { getData } from '../services/DataService';
 
 interface DataChartProps {
   farmId: number
@@ -22,16 +30,30 @@ const DataChart: FC<DataChartProps> = ({
   useEffect(() => {
     const update = async () => {
       const sensorType = sensor === 'any' ? undefined : sensor;
-      const d = byMonth
-        ? await getMonthlyData(farmId, year, month, undefined, sensorType)
-        : await getDataByFarmId(farmId, undefined, sensorType);
-      setData(d);
+      if (sensorType) {
+        const d = await getData(farmId, undefined, sensorType, byMonth, year, month);
+        setData(d);
+      }
     };
+    console.log(data);
     update();
   }, []);
 
+  if (!data) return null;
+
   return (
-    <p>{data}</p>
+    <Container>
+      <Typography variant="body2">
+        {sensor}
+        {byMonth ? `${month}` : 'All time'}
+      </Typography>
+      <LineChart width={1000} height={700} data={data}>
+        <XAxis dataKey="dateTime" />
+        <YAxis dataKey="value" />
+        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+        <Line type="monotone" dataKey="value" stroke="#8884d8" />
+      </LineChart>
+    </Container>
   );
 };
 
