@@ -35,7 +35,6 @@ const DataChart: FC<DataChartProps> = ({
         setData(d);
       }
     };
-    console.log(data);
     update();
   }, []);
 
@@ -47,7 +46,7 @@ const DataChart: FC<DataChartProps> = ({
         {sensor}
         {byMonth ? `${month}` : 'All time'}
       </Typography>
-      <LineChart width={1000} height={700} data={data}>
+      <LineChart width={1000} height={700} data={data.map((e) => e.value)}>
         <XAxis dataKey="dateTime" />
         <YAxis dataKey="value" />
         <CartesianGrid stroke="#eee" strokeDasharray="5 5" />

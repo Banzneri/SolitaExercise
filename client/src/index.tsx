@@ -7,10 +7,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import App from './App';
 
-const styles = {
-  background: '#0a1929',
-};
-
 ReactDOM.render(
   <React.StrictMode>
     <App />

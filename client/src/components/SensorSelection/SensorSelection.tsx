@@ -1,17 +1,10 @@
 import {
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
 } from '@mui/material';
 import { ChangeEvent, FC } from 'react';
-
-enum Sensor {
-  PH = 'ph',
-  Rainfall = 'rainfall',
-  Temperature = 'temperature',
-}
 
 const styles = {
   padding: '1rem 0 1rem 1.5rem',
@@ -20,6 +13,8 @@ const styles = {
 interface SensorSelectionProps {
   handleSensorChange(e: ChangeEvent, val: string): void
 }
+
+const sensors = ['any', 'ph', 'rainfall', 'temperature'];
 
 const SensorSelection: FC<SensorSelectionProps> = ({
   handleSensorChange,
@@ -32,22 +27,13 @@ const SensorSelection: FC<SensorSelectionProps> = ({
       name="radio-buttons-group"
       onChange={(e, val) => handleSensorChange(e, val)}
     >
-      <FormControlLabel value="any" control={<Radio />} label="any" />
-      <FormControlLabel
-        value={Sensor.PH}
-        control={<Radio />}
-        label={Sensor.PH}
-      />
-      <FormControlLabel
-        value={Sensor.Rainfall}
-        control={<Radio />}
-        label={Sensor.Rainfall}
-      />
-      <FormControlLabel
-        value={Sensor.Temperature}
-        control={<Radio />}
-        label={Sensor.Temperature}
-      />
+      {sensors.map((e) => (
+        <FormControlLabel
+          value={e}
+          control={<Radio />}
+          label={e}
+        />
+      ))}
     </RadioGroup>
   </FormControl>
 );
